@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
 export default function AddCase() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [summary, setSummary] = useState(""); 
+  const [summary, setSummary] = useState("");
   const [image, setImage] = useState(null);
 
   const navigate = useNavigate();
@@ -19,20 +19,36 @@ export default function AddCase() {
     }
   }, [currentUser, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const caseData = {
-      title,
-      description,
-      category,
-      summary,
-      image,
-    };
-
-    console.log("Submitted Case:", caseData);
-
-    alert("Case submitted (UI only). Backend not connected yet.");
+    const token = localStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("summary", summary);
+    formData.append("image", image); // actual file
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/cases",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Submitted case:", res.data);
+      alert("Case submitted successfully!");
+      navigate("/profile"); // go to home page
+    } catch (err) {
+      console.error(
+        "Error submitting case:",
+        err.response?.data || err.message
+      );
+      alert("Failed to submit case.");
+    }
   };
 
   return (
@@ -40,7 +56,6 @@ export default function AddCase() {
       <h2 style={styles.title}>Add a New Case</h2>
 
       <form onSubmit={handleSubmit} style={styles.form}>
-
         <input
           type="text"
           placeholder="Case Title"
@@ -96,9 +111,10 @@ export default function AddCase() {
         <button type="submit" style={styles.submitButton}>
           Submit Case
         </button>
-
+        
       </form>
     </div>
+    
   );
 }
 

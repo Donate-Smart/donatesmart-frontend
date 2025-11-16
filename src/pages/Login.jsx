@@ -20,7 +20,7 @@ export default function Login() {
         email,
         password,
       });
-
+   localStorage.setItem("token", res.data.token);
       dispatch(setUser(res.data.user)); // store user in redux
       navigate("/"); // go to home page
     } catch (err) {

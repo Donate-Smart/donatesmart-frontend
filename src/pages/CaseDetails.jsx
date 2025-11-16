@@ -1,50 +1,55 @@
 import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function CaseDetails() {
   const { id } = useParams();
+  const [caseData, setCaseData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // --- Mock Data (نفس القضايا من Home) ---
-  const cases = [
-    {
-      id: 1,
-      title: "Help a Family Affected by Fire",
-      summary:
-        "A family lost their home due to a sudden fire accident. They need urgent support for temporary housing, food supplies, and basic necessities.",
-      category: "Emergency",
-      target: 2000,
-      donations: 950
-    },
-    {
-      id: 2,
-      title: "Support an Orphan's Education",
-      summary:
-        "This young student is in danger of losing access to school due to financial difficulties. Donations will go towards school fees and educational materials.",
-      category: "Education",
-      target: 1200,
-      donations: 300
-    },
-    {
-      id: 3,
-      title: "Medical Aid for Elderly Woman",
-      summary:
-        "An elderly woman requires continuous medical care and medication. Donations will help cover treatment costs and essential medical supplies.",
-      category: "Medical",
-      target: 1500,
-      donations: 700
-    }
-  ];
+  useEffect(() => {
+    const fetchCase = async () => {
+      try {
+        const res = await axios.get(`http://localhost:5000/api/cases/${id}`);
+        setCaseData(res.data);
+      } catch (err) {
+        console.error(
+          "Error fetching case:",
+          err.response?.data || err.message
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const caseData = cases.find((item) => item.id === Number(id));
+    fetchCase();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <h2 style={{ textAlign: "center", marginTop: "40px" }}>
+        Loading case details...
+      </h2>
+    );
+  }
 
   if (!caseData) {
-    return <h2 style={{ textAlign: "center", marginTop: "40px" }}>Case not found.</h2>;
+    return (
+      <h2 style={{ textAlign: "center", marginTop: "40px" }}>
+        Case not found.
+      </h2>
+    );
   }
+  console.log("Image name:", caseData.image);
 
   return (
     <div style={styles.container}>
-      {/* صورة افتراضية */}
       <img
-        src="https://via.placeholder.com/900x300?text=Case+Image"
+        src={
+          caseData.image
+            ? `http://localhost:5000/uploads/${caseData.image}`
+            : "https://via.placeholder.com/900x300?text=No+Image"
+        }
         alt="Case"
         style={styles.image}
       />
@@ -56,8 +61,15 @@ export default function CaseDetails() {
       <p style={styles.summary}>{caseData.summary}</p>
 
       <div style={styles.infoBox}>
-        <p><strong>Target:</strong> ${caseData.target}</p>
-        <p><strong>Donations so far:</strong> ${caseData.donations}</p>
+        <p>
+          <strong>Target:</strong> ${caseData.target}
+        </p>
+        <p>
+          <strong>Donations so far:</strong> ${caseData.donations}
+        </p>
+        <p>
+          <strong>Status:</strong> {caseData.status}
+        </p>
       </div>
 
       <button style={styles.button}>Donate Now</button>
