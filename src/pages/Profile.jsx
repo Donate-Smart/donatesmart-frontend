@@ -1,35 +1,35 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/userSlice";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
+import axios from "axios";
 
 export default function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const currentUser = useSelector((state) => state.user.currentUser);
-
-  // حالات مؤقتة لعرض My Cases لحين ربط الـ Backend
-  const myCases = [
-    {
-      id: 1,
-      title: "Emergency Treatment for Child",
-      category: "Medical",
-      status: "Approved",
-    },
-    {
-      id: 2,
-      title: "Help a Family Rebuild Their Home",
-      category: "Emergency",
-      status: "Pending",
-    },
-  ];
-
-  // لو المستخدم مش مسجل → نرجعه للـ Login
-  useEffect(() => {
+const [myCases, setMyCases] = useState([]);
+ useEffect(() => {
     if (!currentUser) {
       navigate("/login");
+      return;
     }
+
+    const fetchCases = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const res = await axios.get("http://localhost:5000/api/cases/my-cases", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setMyCases(res.data);
+      } catch (err) {
+        console.error("Error fetching cases:", err.response?.data || err.message);
+      }
+    };
+
+    fetchCases();
   }, [currentUser, navigate]);
 
   if (!currentUser) return null;
@@ -86,7 +86,7 @@ export default function Profile() {
 
               <button
                 style={styles.viewBtn}
-                onClick={() => navigate(`/case/${c.id}`)}
+                onClick={() => navigate(`/case/${c._id}`)}
               >
                 View Case
               </button>
