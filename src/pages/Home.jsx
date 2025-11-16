@@ -1,32 +1,25 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function Home() {
   const navigate = useNavigate();
+const [cases, setCases] = useState([]);
 
-  // --- Mock Data (لحد ما يجهز الباك) ---
-  const cases = [
-    {
-      id: 1,
-      title: "Help a Family Affected by Fire",
-      summary: "A family lost their home due to a fire and needs immediate support.",
-      category: "Emergency",
-      donations: 12,
-    },
-    {
-      id: 2,
-      title: "Support an Orphan's Education",
-      summary: "Help a young student cover school fees and continue their education.",
-      category: "Education",
-      donations: 5,
-    },
-    {
-      id: 3,
-      title: "Medical Aid for Elderly Woman",
-      summary: "An elderly woman needs help buying medications and covering treatment costs.",
-      category: "Medical",
-      donations: 7,
-    },
-  ];
+useEffect(() => {
+  const fetchCases = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/cases");
+      setCases(res.data);
+    } catch (err) {
+      console.error("Error fetching cases:", err.response?.data || err.message);
+    }
+  };
+
+  fetchCases();
+}, []);
+
+
 
   return (
     <div style={styles.container}>
@@ -34,7 +27,7 @@ export default function Home() {
 
       <div style={styles.grid}>
         {cases.map((item) => (
-          <div key={item.id} style={styles.card}>
+          <div key={item._id} style={styles.card}>
             <h2 style={styles.cardTitle}>{item.title}</h2>
 
             <p style={styles.category}>Category: {item.category}</p>
@@ -47,7 +40,7 @@ export default function Home() {
 
             <button
               style={styles.button}
-              onClick={() => navigate(`/case/${item.id}`)}
+              onClick={() => navigate(`/case/${item._id}`)}
             >
               View Details
             </button>
