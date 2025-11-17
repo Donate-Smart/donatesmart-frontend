@@ -46,6 +46,11 @@ export default function Navbar() {
             </Link>
           </>
         )}
+        {currentUser?.role === "admin" && (
+          <Link style={styles.link} to="/admin">
+            Admin Panel
+          </Link>
+        )}
 
         {currentUser && (
           <button style={styles.logout} onClick={handleLogout}>
