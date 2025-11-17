@@ -67,9 +67,7 @@ export default function CaseDetails() {
         <p>
           <strong>Donations so far:</strong> ${caseData.donations}
         </p>
-        <p>
-          <strong>Status:</strong> {caseData.status}
-        </p>
+    
       </div>
 
       <button style={styles.button}>Donate Now</button>

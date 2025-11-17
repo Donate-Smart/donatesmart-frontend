@@ -18,10 +18,15 @@ export default function Login() {
     try {
       const res = await axios.post("/api/auth/login", {
         email,
-        password
-    });
-   localStorage.setItem("token", res.data.token);
-      dispatch(setUser(res.data.user)); // store user in redux
+        password,
+      });
+      localStorage.setItem("token", res.data.token);
+      dispatch(
+        setUser({
+          ...res.data.user,
+          token: res.data.token,
+        })
+      ); // store user in redux
       navigate("/"); // go to home page
     } catch (err) {
       setError("Invalid email or password");

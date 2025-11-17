@@ -11,40 +11,67 @@ export default function AdminPanel() {
     if (!currentUser) {
       navigate("/login"); // لو مش مسجل دخول
     } else if (currentUser.role !== "admin") {
-      navigate("/"); // لو مش Admin
-    }
+  navigate("/");
+}
   }, [currentUser, navigate]);
 
-  // Dummy cases
-  const [cases, setCases] = useState([
-    {
-      id: 1,
-      title: "Child Needs Surgery",
-      category: "Medical",
-      status: "Pending",
-    },
-    {
-      id: 2,
-      title: "Help Rebuild Home",
-      category: "Emergency",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      title: "Support Education for 3 Kids",
-      category: "Education",
-      status: "Approved",
-    },
-  ]);
+  const [cases, setCases] = useState([]);
 
-  const updateStatus = (id, newStatus) => {
-    setCases((prev) =>
-      prev.map((c) => (c.id === id ? { ...c, status: newStatus } : c))
-    );
+  useEffect(() => {
+    const fetchCases = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/pending-cases", {
+          headers: {
+            Authorization: `Bearer ${currentUser.token}`,
+          },
+        });
+        const data = await res.json();
+        setCases(data);
+      } catch (err) {
+        console.error("Error fetching cases:", err);
+      }
+    };
+
+   if (currentUser?.role === "admin") {
+  fetchCases();
+}
+
+  }, [currentUser]);
+
+  const updateStatus = async (id, newStatus) => {
+    try {
+      const endpoint =
+        newStatus === "approved"
+          ? `http://localhost:5000/api/admin/approve-case/${id}`
+          : `http://localhost:5000/api/admin/reject-case/${id}`;
+
+      await fetch(endpoint, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${currentUser.token}`,
+        },
+      });
+
+      setCases((prev) =>
+        prev.map((c) => (c._id === id ? { ...c, status: newStatus } : c))
+      );
+    } catch (err) {
+      console.error("Error updating status:", err);
+    }
   };
 
-  const deleteCase = (id) => {
-    setCases((prev) => prev.filter((c) => c.id !== id));
+  const deleteCase = async (id) => {
+    try {
+      await fetch(`http://localhost:5000/api/admin/delete-case/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${currentUser.token}`,
+        },
+      });
+      setCases((prev) => prev.filter((c) => c._id !== id));
+    } catch (err) {
+      console.error("Error deleting case:", err);
+    }
   };
 
   return (
@@ -64,43 +91,40 @@ export default function AdminPanel() {
 
         <tbody>
           {cases.map((c) => (
-            <tr key={c.id}>
-              <td>{c.id}</td>
+            <tr key={c._id}>
+              <td>{c._id}</td>
               <td>{c.title}</td>
               <td>{c.category}</td>
               <td>
                 <strong
                   style={{
                     color:
-                      c.status === "Approved"
+                      c.status === "approved"
                         ? "green"
-                        : c.status === "Rejected"
+                        : c.status === "rejected"
                         ? "red"
                         : "#e67e22",
                   }}
                 >
-                  {c.status}
+                  {c.status.charAt(0).toUpperCase() + c.status.slice(1)}
                 </strong>
               </td>
               <td>
                 <button
                   style={styles.approve}
-                  onClick={() => updateStatus(c.id, "Approved")}
+                  onClick={() => updateStatus(c._id, "approved")}
                 >
                   Approve
                 </button>
 
                 <button
                   style={styles.reject}
-                  onClick={() => updateStatus(c.id, "Rejected")}
+                  onClick={() => updateStatus(c._id, "rejected")}
                 >
                   Reject
                 </button>
 
-                <button
-                  style={styles.delete}
-                  onClick={() => deleteCase(c.id)}
-                >
+                <button style={styles.delete} onClick={() => deleteCase(c._id)}>
                   Delete
                 </button>
               </td>
