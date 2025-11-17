@@ -5,9 +5,12 @@ import Logo from '../../Layout/Header/Logo/Logo'
 import Loader from '../../Common/Loader'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/userSlice";
 
-const Signin = () => {
+const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [loginData, setLoginData] = useState({
     email: '',
@@ -17,35 +20,33 @@ const Signin = () => {
   const [loading, setLoading] = useState(false)
 
   const loginUser = async (e) => {
-    e.preventDefault()
+  e.preventDefault();
+  setLoading(true);
 
-    setLoading(true)
-    try {
-      const res = await axios.post("/api/auth/login", JSON.stringify(loginData));
+  try {
+    const res = await axios.post("/api/auth/login", loginData);
 
-      const data = await res.json()
-
-      if (!res.ok) throw new Error(data.message || "Login failed")
-
-      toast.success("Login successful")
-      // maybe save token here
-      navigate("/")   // if you're using React Router
-
+    console.log(res);
+    localStorage.setItem("token", res.data.token);
+    dispatch(setUser(res.data.user));
+    toast.success("Successfully logged in");
+    setIsSignInOpen(false);
+    navigate("/");
     } catch (err) {
-      toast.error(err.message)
+      const message = err.response?.data?.message || err.message || "Login failed";
+      console.log(err);
+      toast.error(message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <>
-      <div className='mb-10 text-center mx-auto inline-block max-w-[160px]'>
+      <div className='mb-10 text-center mx-auto block max-w-[30%]'>
         <Logo />
       </div>
-
       <SocialSignIn />
-
       <span className="z-1 relative my-8 block text-center before:content-[''] before:absolute before:h-px before:w-[40%] before:bg-black/20 before:left-0 before:top-3 after:content-[''] after:absolute after:h-px after:w-[40%] after:bg-black/20 after:top-3 after:right-0">
         <span className='text-body-secondary relative z-10 inline-block px-3 text-base text-black'>
           OR
@@ -90,9 +91,12 @@ const Signin = () => {
       </a>
       <p className='text-body-secondary text-black text-base'>
         Not a member yet?{' '}
-        <a href='/' className='text-[var(--color-primary)] hover:underline'>
+        <button onClick={() => {
+                setIsSignInOpen(false);
+                setIsSignUpOpen(true);
+              }} className='text-[var(--color-primary)] hover:underline'>
           Sign Up
-        </a>
+        </button>
       </p>
     </>
   )

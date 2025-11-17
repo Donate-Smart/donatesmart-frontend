@@ -35,20 +35,24 @@ const Navbar = () => {
   const handleClickOutside = (event) => {
     if (
       signInRef.current &&
-      !signInRef.current.contains(event.target)
+      !signInRef.current.contains(event.target) &&
+      !event.target.closest(".toast")
     ) {
       setIsSignInOpen(false)
     }
     if (
       signUpRef.current &&
-      !signUpRef.current.contains(event.target)
+      !signUpRef.current.contains(event.target) &&
+      !event.target.closest(".toast")
     ) {
       setIsSignUpOpen(false)
+      console.log(event.target);
     }
     if (
       mobileMenuRef.current &&
       !mobileMenuRef.current.contains(event.target) &&
-      navbarOpen
+      navbarOpen &&
+      !event.target.closest(".toast")
     ) {
       setNavbarOpen(false)
     }
@@ -99,7 +103,7 @@ const Navbar = () => {
                   className='relative mx-auto w-full max-w-md overflow-hidden rounded-lg px-8 pt-14 pb-8 text-center bg-dark_grey/90 backdrop-blur-md bg-white'>
                   <button
                     onClick={() => setIsSignInOpen(false)}
-                    className='absolute top-0 right-0 mr-8 mt-8 dark:invert'
+                    className='absolute top-0 right-0 mr-8 mt-8'
                     aria-label='Close Sign In Modal'>
                     <Icon
                       icon='material-symbols:close-rounded'
@@ -108,7 +112,7 @@ const Navbar = () => {
                       className='text-black hover:text-[var(--color-primary)] inline-block hover:cursor-pointer'
                     />
                   </button>
-                  <Signin />
+                  <Signin  setIsSignInOpen={setIsSignInOpen} setIsSignUpOpen={setIsSignUpOpen} />
                 </div>
               </div>
             )}
@@ -126,7 +130,7 @@ const Navbar = () => {
                   className='relative mx-auto bg-white w-full max-w-md overflow-hidden rounded-lg bg-dark_grey/90 backdrop-blur-md px-8 pt-14 pb-8 text-center'>
                   <button
                     onClick={() => setIsSignUpOpen(false)}
-                    className='absolute top-0 right-0 mr-8 mt-8 dark:invert'
+                    className='absolute top-0 right-0 mr-8 mt-8'
                     aria-label='Close Sign Up Modal'>
                     <Icon
                       icon='material-symbols:close-rounded'
@@ -135,7 +139,7 @@ const Navbar = () => {
                       className='text-black hover:text-[var(--color-primary)] inline-block hover:cursor-pointer'
                     />
                   </button>
-                  <SignUp />
+                  <SignUp setIsSignInOpen={setIsSignInOpen} setIsSignUpOpen={setIsSignUpOpen} />
                 </div>
               </div>
             )}

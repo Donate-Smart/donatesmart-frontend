@@ -10,6 +10,7 @@ import CaseDetails from "./pages/CaseDetails";
 import Profile from "./pages/Profile";
 import AdminPanel from "./pages/AdminPanel";
 import "./App.css";
+import { Toaster } from 'react-hot-toast';
 
 import { useEffect } from "react";
 import AOS from "aos";
@@ -35,6 +36,11 @@ function App() {
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
       <Footer />
+      <Toaster 
+        position="bottom-center" 
+        closeOnClick
+        containerClassName="toast"
+      />
       {/* <ScrollToTop /> */}
     </Router>
   );

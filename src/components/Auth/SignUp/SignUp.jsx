@@ -6,7 +6,7 @@ import Loader from '../../Common/Loader'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const SignUp = () => {
+const SignUp = ({setIsSignInOpen, setIsSignUpOpen}) => {
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate();
 
@@ -18,22 +18,25 @@ const SignUp = () => {
     const value = Object.fromEntries(data.entries())
     const finalData = { ...value }
 
-    await axios.post("api/auth/register", JSON.stringify(finalData)).
-    then((res) => res.json())
-      .then((data) => {
-        toast.success('Successfully registered')
-        setLoading(false)
-        navigate("/login");
-      })
-      .catch((err) => {
-        toast.error(err.message)
-        setLoading(false)
-      });
+    await axios.post("api/auth/register", finalData)
+    .then((res) => {
+      toast.success('Successfully registered');
+      console.log(res.data);
+      setLoading(false)
+      setIsSignInOpen(true);
+      setIsSignUpOpen(false);
+    })
+    .catch((err) => {
+      const message = err.response?.data?.message || err.message || "Failed to registe.";
+      console.log(err);
+      toast.error(message);
+      setLoading(false)
+    });
   }
 
   return (
     <>
-      <div className='mb-10 text-center mx-auto inline-block max-w-[160px]'>
+      <div className='mb-10 text-center mx-auto block max-w-[30%]'>
         <Logo />
       </div>
 
@@ -95,9 +98,12 @@ const SignUp = () => {
 
       <p className='text-body-secondary text-black text-base'>
         Already have an account?
-        <a href='/' className='pl-2 text-[var(--color-primary)] hover:underline'>
+        <button onClick={() => {
+                setIsSignInOpen(true);
+                setIsSignUpOpen(false);
+              }} className='pl-2 text-[var(--color-primary)] hover:underline'>
           Sign In
-        </a>
+        </button>
       </p>
     </>
   )
