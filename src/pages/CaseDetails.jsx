@@ -10,7 +10,7 @@ export default function CaseDetails() {
   useEffect(() => {
     const fetchCase = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/cases/${id}`);
+        const res = await axios.get(`/api/cases/${id}`);
         setCaseData(res.data);
       } catch (err) {
         console.error(

@@ -16,10 +16,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("/api/auth/login", {
         email,
-        password,
-      });
+        password
+    });
    localStorage.setItem("token", res.data.token);
       dispatch(setUser(res.data.user)); // store user in redux
       navigate("/"); // go to home page
@@ -30,7 +30,7 @@ export default function Login() {
 
   return (
     <div style={styles.container}>
-      <h3>Welcome Back!! Can You Login?</h3>
+      <h3>Welcome Back! </h3>
 
       <form onSubmit={handleLogin} style={styles.form}>
         <input

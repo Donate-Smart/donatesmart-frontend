@@ -1,54 +1,66 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import React from 'react'
+import Hero from '../components/Home/Hero/Hero'
+import NamesList from '../components/Home/Cases/FeatruedCases'
+import Testimonial from '../components/Home/Testimonial/Testimonial'
+import ContactForm from '../components/Home/Contact/Contact'
 
 export default function Home() {
   const navigate = useNavigate();
-const [cases, setCases] = useState([]);
+  const [cases, setCases] = useState([]);
 
-useEffect(() => {
-  const fetchCases = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/cases");
-      setCases(res.data);
-    } catch (err) {
-      console.error("Error fetching cases:", err.response?.data || err.message);
-    }
-  };
+  useEffect(() => {
+    const fetchCases = async () => {
+      try {
+        const res = await axios.get("/api/cases");
+        setCases(res.data);
+      } catch (err) {
+        console.error("Error fetching cases:", err.response?.data || err.message);
+      }
+    };
 
-  fetchCases();
-}, []);
+    fetchCases();
+  }, []);
 
 
+    return (
+      <main>
+        <Hero />
+        <NamesList />
+        <Testimonial />
+        <ContactForm />
+      </main>
+      )
+  // return (
+  //   <div style={styles.container}>
+  //     <h1 style={styles.title}>Available Donation Cases</h1>
 
-  return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Available Donation Cases</h1>
+  //     <div style={styles.grid}>
+  //       {cases.map((item) => (
+  //         <div key={item._id} style={styles.card}>
+  //           <h2 style={styles.cardTitle}>{item.title}</h2>
 
-      <div style={styles.grid}>
-        {cases.map((item) => (
-          <div key={item._id} style={styles.card}>
-            <h2 style={styles.cardTitle}>{item.title}</h2>
+  //           <p style={styles.category}>Category: {item.category}</p>
 
-            <p style={styles.category}>Category: {item.category}</p>
+  //           <p style={styles.summary}>{item.summary}</p>
 
-            <p style={styles.summary}>{item.summary}</p>
+  //           <p style={styles.donations}>
+  //             Donations: <span style={{ fontWeight: "bold" }}>{item.donations}</span>
+  //           </p>
 
-            <p style={styles.donations}>
-              Donations: <span style={{ fontWeight: "bold" }}>{item.donations}</span>
-            </p>
-
-            <button
-              style={styles.button}
-              onClick={() => navigate(`/case/${item._id}`)}
-            >
-              View Details
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+  //           <button
+  //             style={styles.button}
+  //             onClick={() => navigate(`/case/${item._id}`)}
+  //           >
+  //             View Details
+  //           </button>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   </div>
+  // );
 }
 
 const styles = {
@@ -102,3 +114,5 @@ const styles = {
     fontWeight: "bold",
   },
 };
+
+

@@ -10,7 +10,7 @@ export default function AdminPanel() {
   useEffect(() => {
     if (!currentUser) {
       navigate("/login"); // لو مش مسجل دخول
-    } else if (currentUser.email !== "admin@admin.com") {
+    } else if (currentUser.role !== "admin") {
       navigate("/"); // لو مش Admin
     }
   }, [currentUser, navigate]);
