@@ -20,8 +20,13 @@ export default function Login() {
         email,
         password,
       });
-   localStorage.setItem("token", res.data.token);
-      dispatch(setUser(res.data.user)); // store user in redux
+      localStorage.setItem("token", res.data.token);
+      dispatch(
+        setUser({
+          ...res.data.user,
+          token: res.data.token,
+        })
+      ); // store user in redux
       navigate("/"); // go to home page
     } catch (err) {
       setError("Invalid email or password");
