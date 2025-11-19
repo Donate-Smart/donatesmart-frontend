@@ -16,7 +16,7 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+      const res = await axios.post("/api/auth/login", {
         email,
         password,
       });
@@ -35,7 +35,7 @@ export default function Login() {
 
   return (
     <div style={styles.container}>
-      <h3>Welcome Back!! Can You Login?</h3>
+      <h3>Welcome Back! </h3>
 
       <form onSubmit={handleLogin} style={styles.form}>
         <input
