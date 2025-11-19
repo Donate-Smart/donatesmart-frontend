@@ -24,7 +24,7 @@ export default function Navbar() {
           Home
         </Link>
 
-        {currentUser && (
+        {currentUser && currentUser.role !=="admin" && (
           <Link style={styles.link} to="/add-case">
             Add Case
           </Link>

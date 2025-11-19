@@ -1,19 +1,24 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/userSlice";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Profile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.currentUser);
-const [myCases, setMyCases] = useState([]);
- useEffect(() => {
+
+  const [myCases, setMyCases] = useState([]);
+
+  useEffect(() => {
     if (!currentUser) {
       navigate("/login");
       return;
     }
+
+    // ❗ لا نحمل الحالات إذا كان Admin
+    if (currentUser.role === "admin") return;
 
     const fetchCases = async () => {
       try {
@@ -59,41 +64,45 @@ const [myCases, setMyCases] = useState([]);
         </div>
       </div>
 
-      {/* My Cases */}
-      <h3 style={styles.sectionTitle}>My Cases</h3>
+      {/* 🔥 My Cases — يظهر فقط إذا كان المستخدم NOT admin */}
+      {currentUser.role !== "admin" && (
+        <>
+          <h3 style={styles.sectionTitle}>My Cases</h3>
 
-      <div style={styles.casesList}>
-        {myCases.length === 0 ? (
-          <p style={styles.noCases}>You haven't added any cases yet.</p>
-        ) : (
-          myCases.map((c) => (
-            <div key={c.id} style={styles.caseCard}>
-              <h4 style={styles.caseTitle}>{c.title}</h4>
-              <p>
-                <strong>Category:</strong> {c.category}
-              </p>
-              <p>
-                <strong>Status:</strong>{" "}
-                <span
-                  style={{
-                    color: c.status === "Approved" ? "green" : "#e67e22",
-                    fontWeight: "bold",
-                  }}
-                >
-                  {c.status}
-                </span>
-              </p>
+          <div style={styles.casesList}>
+            {myCases.length === 0 ? (
+              <p style={styles.noCases}>You haven't added any cases yet.</p>
+            ) : (
+              myCases.map((c) => (
+                <div key={c._id} style={styles.caseCard}>
+                  <h4 style={styles.caseTitle}>{c.title}</h4>
+                  <p>
+                    <strong>Category:</strong> {c.category}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span
+                      style={{
+                        color: c.status === "Approved" ? "green" : "#e67e22",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {c.status}
+                    </span>
+                  </p>
 
-              <button
-                style={styles.viewBtn}
-                onClick={() => navigate(`/case/${c._id}`)}
-              >
-                View Case
-              </button>
-            </div>
-          ))
-        )}
-      </div>
+                  <button
+                    style={styles.viewBtn}
+                    onClick={() => navigate(`/case/${c._id}`)}
+                  >
+                    View Case
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -149,8 +158,6 @@ const styles = {
     cursor: "pointer",
     fontWeight: "bold",
   },
-
-  /** MY CASES */
   casesList: {
     display: "flex",
     flexDirection: "column",
