@@ -1,6 +1,8 @@
 import React from 'react'
 
 const SocialSignIn = () => {
+  // TODO: integrate sign in method.
+  // link for google sign in
   return (
     <>
       {/*<div className='flex gap-4'>

@@ -15,7 +15,7 @@ export default function AddCase() {
   // 🔐 حماية الصفحة
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login");
+      navigate("/");
     }
   }, [currentUser, navigate]);
 

@@ -1,20 +1,20 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import React from 'react'
-import Hero from '../components/Home/Hero/Hero'
-import NamesList from '../components/Home/Cases/FeatruedCases'
-import Testimonial from '../components/Home/Testimonial/Testimonial'
-import ContactForm from '../components/Home/Contact/Contact'
 
 export default function Home() {
   const navigate = useNavigate();
   const [cases, setCases] = useState([]);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
+    if (!currentUser) navigate("/");
+    if (currentUser?.role !== "user") navigate("/admin");
     const fetchCases = async () => {
       try {
         const res = await axios.get("/api/cases");
+        console.log(res);
         setCases(res.data);
       } catch (err) {
         console.error("Error fetching cases:", err.response?.data || err.message);
@@ -25,47 +25,42 @@ export default function Home() {
   }, []);
 
 
-    return (
-      <main>
-        <Hero />
-        <NamesList />
-        <Testimonial />
-        <ContactForm />
-      </main>
-      )
-  // return (
-  //   <div style={styles.container}>
-  //     <h1 style={styles.title}>Available Donation Cases</h1>
 
-  //     <div style={styles.grid}>
-  //       {cases.map((item) => (
-  //         <div key={item._id} style={styles.card}>
-  //           <h2 style={styles.cardTitle}>{item.title}</h2>
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.title}>Available Donation Cases</h1>
+      {cases.length? <div style={styles.grid}>
+        {cases.map((item) => (
+          <div key={item._id} style={styles.card}>
+            <h2 style={styles.cardTitle}>{item.title}</h2>
 
-  //           <p style={styles.category}>Category: {item.category}</p>
+            <p style={styles.category}>Category: {item.category}</p>
 
-  //           <p style={styles.summary}>{item.summary}</p>
+            <p style={styles.summary}>{item.summary}</p>
 
-  //           <p style={styles.donations}>
-  //             Donations: <span style={{ fontWeight: "bold" }}>{item.donations}</span>
-  //           </p>
+            <p style={styles.donations}>
+              Donations: <span style={{ fontWeight: "bold" }}>{item.donations}</span>
+            </p>
 
-  //           <button
-  //             style={styles.button}
-  //             onClick={() => navigate(`/case/${item._id}`)}
-  //           >
-  //             View Details
-  //           </button>
-  //         </div>
-  //       ))}
-  //     </div>
-  //   </div>
-  // );
+            <button
+              style={styles.button}
+              onClick={() => navigate(`/case/${item._id}`)}
+            >
+              View Details
+            </button>
+          </div>
+        ))}
+      </div>: 
+      <p className="text-center">No approved cases</p>}
+    </div>
+  );
 }
 
 const styles = {
   container: {
     padding: "40px",
+    paddingTop: "100px",
+    minHeight: "90vh"
   },
   title: {
     textAlign: "center",
@@ -112,7 +107,5 @@ const styles = {
     cursor: "pointer",
     width: "100%",
     fontWeight: "bold",
-  },
+  }
 };
-
-

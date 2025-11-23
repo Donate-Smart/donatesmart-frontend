@@ -1,13 +1,18 @@
 import { useEffect, useRef, useState } from 'react'
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Logo from './Logo/Logo'
 import HeaderLink from './Navigation/HeaderLink'
 import MobileHeaderLink from './Navigation/MobileHeaderLink'
 import Signin from '../../Auth/SignIn/SignIn'
 import SignUp from '../../Auth/SignUp/SignUp'
+import { logoutUser } from "../../../redux/userSlice";
 import { Icon } from '@iconify/react';
+import toast from 'react-hot-toast'
 
 
 const Navbar = () => {
+  const currentUser = useSelector((state) => state.user.currentUser);
   const [navbarOpen, setNavbarOpen] = useState(false)
   const [sticky, setSticky] = useState(false)
   const [isSignInOpen, setIsSignInOpen] = useState(false)
@@ -19,13 +24,36 @@ const Navbar = () => {
   const signUpRef = useRef(null)
   const mobileMenuRef = useRef(null)
 
-  const headerData = [
-  { label: 'Home', href: '/#Home' },
-  { label: 'Cases', href: '/#Cases' },
-  { label: 'Testimonial', href: '/#testimonial-section' },
-  { label: 'Contact Us', href: '/#contact' },
-]
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  let headerData = [];
+
+  if(currentUser?.role === "user")
+  {
+    headerData = [
+      { label: 'Home', href: '/home' },
+      { label: 'Cases', href: '/cases'},
+      { label: 'Contact Us', href: '/contact' },
+      { label: 'Profile', href: '/profile'},
+    ]
+  }
+  else if(currentUser?.role === "admin")
+  {
+     headerData = [
+      { label: 'Admin Panel', href: '/admin'},
+      { label: 'Cases', href: '/cases' },
+      { label: 'Profile', href: '/admin_profile'},
+    ]
+  }
+  else{
+     headerData = [
+      { label: 'Home', href: '\\' },
+      { label: 'Cases', href: '/#Cases' },
+      { label: 'Testimonial', href: '/#testimonial-section' },
+      { label: 'Contact Us', href: '/#contact' },
+    ]
+  }
 
   const handleScroll = () => {
     setSticky(window.scrollY >= 10)
@@ -75,6 +103,12 @@ const Navbar = () => {
     }
   }, [isSignInOpen, isSignUpOpen, navbarOpen])
 
+  const signOutUser = () => {
+    dispatch(logoutUser());
+    toast.success("user logged out");
+    navigate("/");
+  };
+
   return (
     <header
       className={`fixed top-0 z-40 w-full transition-all duration-300 ${
@@ -88,14 +122,22 @@ const Navbar = () => {
               <HeaderLink key={index} item={item} />
             ))}
           </nav>
+          {/* sign in/up buttons and popup menu */}
           <div className='flex items-center gap-4'>
-            <button
+            {!currentUser && (<button
               className='hidden lg:block bg-transparent text-[var(--color-primary)] border hover:bg-[var(--color-primary)] border-[var(--color-primary)] hover:text-white duration-300 px-6 py-2 rounded-lg hover:cursor-pointer'
               onClick={() => {
                 setIsSignInOpen(true)
               }}>
               Sign In
-            </button>
+            </button>)}
+            {currentUser && (<button
+              className='hidden lg:block bg-transparent text-[var(--color-primary)] border hover:bg-[var(--color-primary)] border-[var(--color-primary)] hover:text-white duration-300 px-6 py-2 rounded-lg hover:cursor-pointer'
+              onClick={() => {
+                signOutUser();
+              }}>
+              Sign out
+            </button>)}
             {isSignInOpen && (
               <div className='fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50'>
                 <div
@@ -116,13 +158,13 @@ const Navbar = () => {
                 </div>
               </div>
             )}
-            <button
+            {!currentUser && (<button
               className='hidden lg:block bg-[var(--color-primary)] text-white text-base font-medium hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] px-6 py-2 rounded-lg hover:cursor-pointer'
               onClick={() => {
                 setIsSignUpOpen(true)
               }}>
               Sign Up
-            </button>
+            </button>)}
             {isSignUpOpen && (
               <div className='fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50'>
                 <div
@@ -143,6 +185,7 @@ const Navbar = () => {
                 </div>
               </div>
             )}
+            {/* mobile navbar */}
             <button
               onClick={() => setNavbarOpen(!navbarOpen)}
               className='block lg:hidden p-2 rounded-lg'
@@ -165,7 +208,6 @@ const Navbar = () => {
             <h2 className='text-lg font-bold text-midnight_text'>
               <Logo />
             </h2>
-            {/*  */}
             <button
               onClick={() => setNavbarOpen(false)}
               className='bg-black/30 rounded-full p-1 text-white'
@@ -182,22 +224,29 @@ const Navbar = () => {
               <MobileHeaderLink key={index} item={item} />
             ))}
             <div className='mt-4 flex flex-col gap-4 w-full'>
-              <button
+              {currentUser && (<button
+                className='bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg border  border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-transparent hover:cursor-pointer transition duration-300 ease-in-out'
+                onClick={() => {
+                  signOutUser();
+                }}>
+                Sign Out
+              </button>)}
+              {!currentUser && (<button
                 className='bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg border  border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-transparent hover:cursor-pointer transition duration-300 ease-in-out'
                 onClick={() => {
                   setIsSignInOpen(true)
                   setNavbarOpen(false)
                 }}>
                 Sign In
-              </button>
-              <button
+              </button>)}
+              {!currentUser && (<button
                 className='bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg border  border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-transparent hover:cursor-pointer transition duration-300 ease-in-out'
                 onClick={() => {
                   setIsSignUpOpen(true)
                   setNavbarOpen(false)
                 }}>
                 Sign Up
-              </button>
+              </button>)}
             </div>
           </nav>
         </div>
@@ -221,7 +270,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/login");
+    navigate("/");
   };
 
   return (

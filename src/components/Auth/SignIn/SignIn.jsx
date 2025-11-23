@@ -20,24 +20,29 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
   const [loading, setLoading] = useState(false)
 
   const loginUser = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    const res = await axios.post("/api/auth/login", loginData);
+    try {
+      const res = await axios.post("/api/auth/login", loginData);
 
-    console.log(res);
-    localStorage.setItem("token", res.data.token);
-    dispatch(setUser(res.data.user));
-    toast.success("Successfully logged in");
-    setIsSignInOpen(false);
-    navigate("/");
-    } catch (err) {
-      const message = err.response?.data?.message || err.message || "Login failed";
-      console.log(err);
-      toast.error(message);
-    } finally {
-      setLoading(false);
+      console.log(res);
+      localStorage.setItem("token", res.data.token);
+      dispatch(setUser(res.data.user));
+      toast.success("Successfully logged in");
+      setIsSignInOpen(false);
+      if(res.data.user?.role === "user")
+        navigate("/home");
+      else
+        navigate("/admin");
+    } 
+    catch (err) {
+        const message = err.response?.data?.message || err.message || "Login failed";
+        console.log(err);
+        toast.error(message);
+    } 
+    finally {
+        setLoading(false);
     }
   };
 

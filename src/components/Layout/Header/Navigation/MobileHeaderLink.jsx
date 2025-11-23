@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useSelector } from "react-redux";
 
 const MobileHeaderLink = ({ item }) => {
   const [submenuOpen, setSubmenuOpen] = useState(false)
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   const handleToggle = () => {
     setSubmenuOpen(!submenuOpen)

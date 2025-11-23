@@ -8,6 +8,8 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loader, setLoader] = useState(false);
 
+  //TODO: check if forget password works properly
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 

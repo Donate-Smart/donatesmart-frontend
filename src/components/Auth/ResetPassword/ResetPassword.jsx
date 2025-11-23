@@ -5,6 +5,7 @@ import Loader from "../../Common/Loader";
 import { useNavigate } from "react-router-dom";
 
 const ResetPassword = ({ token }) => {
+  //TODO: check if forget password works properly
   const [data, setData] = useState({
     newPassword: "",
     ReNewPassword: "",
