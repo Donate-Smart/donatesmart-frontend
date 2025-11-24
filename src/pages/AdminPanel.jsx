@@ -14,8 +14,8 @@ export default function AdminPanel() {
 
   // حماية الأدمن
   useEffect(() => {
-    if (!currentUser) navigate("/login");
-    else if (currentUser.role !== "admin") navigate("/");
+    if (!currentUser) navigate("/");
+    else if (currentUser.role !== "admin") navigate("/home");
   }, [currentUser, navigate]);
 
   // جلب الإحصائيات (Dashboard)
