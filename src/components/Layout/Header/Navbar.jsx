@@ -33,7 +33,7 @@ const Navbar = () => {
   {
     headerData = [
       { label: 'Home', href: '/home' },
-      { label: 'Cases', href: '/cases'},
+      { label: 'Cases', href: '/add-case' },
       { label: 'Contact Us', href: '/contact' },
       { label: 'Profile', href: '/profile'},
     ]
