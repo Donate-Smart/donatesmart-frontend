@@ -104,9 +104,9 @@ const Navbar = () => {
   }, [isSignInOpen, isSignUpOpen, navbarOpen])
 
   const signOutUser = () => {
-    dispatch(logoutUser());
-    toast.success("user logged out");
-    navigate("/");
+      dispatch(logoutUser());
+      toast.success("user logged out");
+      navigate("/");
   };
 
   return (

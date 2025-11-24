@@ -1,10 +1,12 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function AdminPanel() {
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const token = localStorage.getItem("token");
 
   const [activeTab, setActiveTab] = useState("dashboard");
 
@@ -22,10 +24,13 @@ export default function AdminPanel() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/admin/analytics", {
-          headers: { Authorization: `Bearer ${currentUser.token}` },
-        });
-        setAnalytics(await res.json());
+        const res = await axios.get(
+          "/api/admin/analytics",
+          { headers: { Authorization: `Bearer ${token}` },}
+        );
+        console.log("analatycs:");
+        console.log(res.data);
+        setAnalytics(res.data || []);
       } catch (err) {
         console.log("Analytics error:", err);
       }
@@ -37,14 +42,20 @@ export default function AdminPanel() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/admin/users", {
-          headers: { Authorization: `Bearer ${currentUser.token}` },
-        });
-        setUsers(await res.json());
+        const res = await axios.get(
+          "/api/admin/users",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        console.log("users:");
+        console.log(res.data);
+        setUsers(res.data || []);
       } catch (err) {
         console.log("Users error:", err);
       }
     };
+
     if (currentUser?.role === "admin") fetchUsers();
   }, [currentUser]);
 
@@ -52,14 +63,18 @@ export default function AdminPanel() {
   useEffect(() => {
     const fetchCases = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/admin/pending-cases", {
-          headers: { Authorization: `Bearer ${currentUser.token}` },
-        });
-        setCases(await res.json());
+        const res = await axios.get(
+          "api/admin/pending-cases",
+          { headers: { Authorization: `Bearer ${token}` },}
+        );
+        console.log("cases");
+        console.log(res.data);
+        setCases(res.data || {});
       } catch (err) {
         console.error("Cases error:", err);
       }
     };
+
     if (currentUser?.role === "admin") fetchCases();
   }, [currentUser]);
 
@@ -68,16 +83,19 @@ export default function AdminPanel() {
     try {
       const endpoint =
         newStatus === "approved"
-          ? `http://localhost:5000/api/admin/approve-case/${id}`
-          : `http://localhost:5000/api/admin/reject-case/${id}`;
+          ? `api/admin/approve-case/${id}`
+          : `api/admin/reject-case/${id}`;
 
-      await fetch(endpoint, {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${currentUser.token}` },
-      });
+      await axios.put(
+        endpoint,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-      setCases((prev) =>
-        prev.map((c) =>
+      setCases(prev =>
+        prev.map(c =>
           c._id === id ? { ...c, status: newStatus } : c
         )
       );
@@ -89,12 +107,12 @@ export default function AdminPanel() {
   // حذف الحالة
   const deleteCase = async (id) => {
     try {
-      await fetch(`http://localhost:5000/api/admin/delete-case/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${currentUser.token}` },
-      });
+      await axios.delete(
+        `/api/admin/delete-case/${id}`,
+        { headers: { Authorization: `Bearer ${token}` }, }
+      );
 
-      setCases((prev) => prev.filter((c) => c._id !== id));
+      setCases(prev => prev.filter(c => c._id !== id));
     } catch (err) {
       console.error("Delete error:", err);
     }
@@ -193,7 +211,7 @@ export default function AdminPanel() {
           </thead>
 
           <tbody>
-            {cases.map((c) => (
+            {cases?.length && cases.map((c) => (
               <tr key={c._id} style={styles.tr}>
                 <td style={styles.td}>{c._id}</td>
                 <td style={styles.td}>{c.title}</td>
