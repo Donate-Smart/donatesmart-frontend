@@ -288,7 +288,7 @@ const styles = {
   analyticsCards: {
     display: "flex",
     gap: "20px",
-    marginTop: "20px",
+    marginTop: "21px",
   },
   card: {
     flex: 1,
