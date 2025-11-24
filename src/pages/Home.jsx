@@ -1,31 +1,35 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 
 export default function Home() {
   const navigate = useNavigate();
-const [cases, setCases] = useState([]);
+  const [cases, setCases] = useState([]);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
-useEffect(() => {
-  const fetchCases = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/cases");
-      setCases(res.data);
-    } catch (err) {
-      console.error("Error fetching cases:", err.response?.data || err.message);
-    }
-  };
+  useEffect(() => {
+    if (!currentUser) navigate("/");
+    if (currentUser?.role !== "user") navigate("/admin");
+    const fetchCases = async () => {
+      try {
+        const res = await axios.get("/api/cases");
+        console.log(res);
+        setCases(res.data);
+      } catch (err) {
+        console.error("Error fetching cases:", err.response?.data || err.message);
+      }
+    };
 
-  fetchCases();
-}, []);
+    fetchCases();
+  }, []);
 
 
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Available Donation Cases</h1>
-
-      <div style={styles.grid}>
+      {cases.length? <div style={styles.grid}>
         {cases.map((item) => (
           <div key={item._id} style={styles.card}>
             <h2 style={styles.cardTitle}>{item.title}</h2>
@@ -46,7 +50,8 @@ useEffect(() => {
             </button>
           </div>
         ))}
-      </div>
+      </div>: 
+      <p className="text-center">No approved cases</p>}
     </div>
   );
 }
@@ -54,6 +59,8 @@ useEffect(() => {
 const styles = {
   container: {
     padding: "40px",
+    paddingTop: "100px",
+    minHeight: "90vh"
   },
   title: {
     textAlign: "center",
@@ -100,5 +107,5 @@ const styles = {
     cursor: "pointer",
     width: "100%",
     fontWeight: "bold",
-  },
+  }
 };
