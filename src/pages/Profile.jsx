@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../redux/userSlice";
 import { useEffect, useState } from "react";
@@ -6,14 +6,14 @@ import axios from "axios";
 
 export default function Profile() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  
   const currentUser = useSelector((state) => state.user.currentUser);
 
   const [myCases, setMyCases] = useState([]);
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/login");
+      navigate("/");
       return;
     }
 
@@ -39,11 +39,6 @@ export default function Profile() {
 
   if (!currentUser) return null;
 
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    navigate("/login");
-  };
-
   return (
     <div style={styles.container}>
       <h2 style={styles.title}>My Profile</h2>
@@ -57,10 +52,9 @@ export default function Profile() {
         </p>
 
         <div style={styles.buttons}>
-          <button style={styles.editBtn}>Edit Profile</button>
-          <button style={styles.logoutBtn} onClick={handleLogout}>
-            Logout
-          </button>
+          <button style={styles.editBtn} onClick={() => {
+            navigate("/profile-edit");
+          }}>Edit Profile</button>
         </div>
       </div>
 
