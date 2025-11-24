@@ -51,7 +51,7 @@ export default function Home() {
           </div>
         ))}
       </div>: 
-      <p className="text-center">No approved cases</p>}
+      <p className="text-center">No available cases</p>}
     </div>
   );
 }
