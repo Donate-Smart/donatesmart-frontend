@@ -1,147 +1,116 @@
-import { Icon } from '@iconify/react/dist/iconify.js'
+import { Icon } from '@iconify/react';
+import Logo from '../Header/Logo/Logo';
+import { Link } from 'react-router-dom';
 
-const Footer = () => {
-  const footerlink = [
-  {
-    section: 'Company',
-    links: [
-      { label: 'Home', href: '/#Home' },
-      { label: 'Cases', href: '/#Cases' },
-      { label: 'Testimonial', href: '/#testimonial-section' },
-      { label: 'Join', href: '/#join-section' },
-      { label: 'Contact Us', href: '/#contact' },
-    ],
-  },
-  {
-    section: 'Support',
-    links: [
-      { label: 'Help center', href: '/' },
-      { label: 'Terms of service', href: '/' },
-      { label: 'Legal', href: '/' },
-      { label: 'Privacy Policy', href: '/' },
-      { label: 'Status', href: '/' },
-    ],
-  },
-  ]
-
+function Footer() {
   return (
-    <footer className='bg-[var(--color-primary)]' id='first-section'>
-      <div className='container pt-60 pb-10'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-16 xl:gap-8'>
-          <div className='col-span-4 flex flex-col gap-5'>
-            <div>
-              <img
-                src='/images/logo/logo2.svg'
-                alt='Logo'
-                width={48}
-                height={64}
-              />
-            </div>
-            <p className='text-white text-lg font-medium leading-7'>
-              {' '}
-              Your kindness can change someone's <br /> tomorrow.{' '}
+    <footer className="bg-white border-t border-gray-200">
+      <div className="container mx-auto px-6 py-12">
+        <div className="grid md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="space-y-4">
+            <Logo />
+            <p className="text-[var(--color-text-light)] text-sm">
+              Empowering communities through transparent and secure charitable giving.
             </p>
-            <div className='flex gap-4'>
-              <a
-                href='/'
-                className='bg-white/20 rounded-full p-2 text-white hover:bg-cream hover:text-[var(--color-primary)] duration-300'>
-                <Icon
-                  icon='tabler:brand-instagram'
-                  className='text-2xl inline-block'
-                />
-              </a>
-              <a
-                href='/'
-                className='bg-white/20 rounded-full p-2 text-white hover:bg-cream hover:text-[var(--color-primary)] duration-300'>
-                <Icon
-                  icon='tabler:brand-dribbble'
-                  className='text-2xl inline-block'
-                />
-              </a>
-              <a
-                href='/'
-                className='bg-white/20 rounded-full p-2 text-white hover:bg-cream hover:text-[var(--color-primary)] duration-300'>
-                <Icon
-                  icon='tabler:brand-twitter-filled'
-                  className='text-2xl inline-block'
-                />
-              </a>
-              <a
-                href='/'
-                className='bg-white/20 rounded-full p-2 text-white hover:bg-cream hover:text-[var(--color-primary)] duration-300'>
-                <Icon
-                  icon='tabler:brand-youtube-filled'
-                  className='text-2xl inline-block'
-                />
-              </a>
-            </div>
           </div>
 
-          {/* CLOUMN-2/3 */}
-          <div className='col-span-4'>
-            <div className='flex gap-20'>
-              {footerlink.map((product, i) => (
-                <div key={i} className='group relative col-span-2'>
-                  <p className='text-white text-xl font-semibold mb-9'>
-                    {product.section}
-                  </p>
-                  <ul>
-                    {product.links.map((item, i) => (
-                      <li key={i} className='mb-3'>
-                        <a
-                          href={item.href}
-                          className='text-white/60 hover:text-white text-sm font-normal mb-6'>
-                          {item.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-[var(--color-text-dark)] mb-4">Quick Links</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  How It Works
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  Featured Cases
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  Success Stories
+                </Link>
+              </li>
+            </ul>
           </div>
-          {/* CLOUMN-4 */}
 
-          <div className='col-span-4'>
-            <h3 className='text-white text-xl font-semibold mb-6'>
-              Stay up to date
-            </h3>
-            <div className='relative text-white focus-within:text-white flex flex-row-reverse w-[50%] lg:w-full'>
-              <input
-                type='Email address'
-                name='q'
-                className='py-4 text-sm w-full text-white bg-white/15 rounded-md pl-4 focus:outline-hidden bg-emailbg focus:text-white'
-                placeholder='Your email address'
-                autoComplete='off'
-              />
-              <div className='absolute inset-y-0 right-0 flex items-center pr-2'>
-                <button
-                  type='submit'
-                  className='p-1 focus:outline-hidden focus:shadow-outline'>
-                  <Icon
-                    icon='tabler:send'
-                    className='text-white text-2xl inline-block me-2'
-                  />
-                </button>
-              </div>
+          {/* Support */}
+          <div>
+            <h4 className="text-[var(--color-text-dark)] mb-4">Support</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  Help Center
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                  Terms of Service
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Social */}
+          <div>
+            <h4 className="text-[var(--color-text-dark)] mb-4">Follow Us</h4>
+            <div className="flex gap-3">
+              <Link
+                to="/"
+                className="w-10 h-10 rounded-full bg-[var(--color-bg-soft)] hover:bg-gradient-to-br hover:from-[var(--color-primary)] hover:to-[var(--color-primary-dark)] flex items-center justify-center transition-all group shadow-md"
+              >
+                <Icon icon="lucide:facebook" className="w-5 h-5 text-[var(--color-text-light)] group-hover:text-white transition-colors" />
+              </Link>
+              <Link
+                to="/"
+                className="w-10 h-10 rounded-full bg-[var(--color-bg-soft)] hover:bg-gradient-to-br hover:from-[var(--color-primary)] hover:to-[var(--color-primary-dark)] flex items-center justify-center transition-all group shadow-md"
+              >
+                <Icon icon="lucide:twitter" className="w-5 h-5 text-[var(--color-text-light)] group-hover:text-white transition-colors" />
+              </Link>
+              <Link
+                to="/"
+                className="w-10 h-10 rounded-full bg-[var(--color-bg-soft)] hover:bg-gradient-to-br hover:from-[var(--color-primary)] hover:to-[var(--color-primary-dark)] flex items-center justify-center transition-all group shadow-md"
+              >
+                <Icon icon="lucide:instagram" className="w-5 h-5 text-[var(--color-text-light)] group-hover:text-white transition-colors" />
+              </Link>
+              <Link
+                to="/"
+                className="w-10 h-10 rounded-full bg-[var(--color-bg-soft)] hover:bg-gradient-to-br hover:from-[var(--color-primary)] hover:to-[var(--color-primary-dark)] flex items-center justify-center transition-all group shadow-md"
+              >
+                 <Icon icon="lucide:linkedin" className="w-5 h-5 text-[var(--color-text-light)] group-hover:text-white transition-colors" />
+              </Link>
             </div>
           </div>
         </div>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-200 mt-8 pt-8 text-center">
+          <p className="text-[var(--color-text-light)] text-sm">
+            © 2025 DonateSmart. All rights reserved. Made with{' '}
+            <Icon icon="fluent:heart-28-filled" className="inline w-4 h-4 text-[var(--color-primary)]" /> for a better world.
+          </p>
+        </div>
       </div>
-      {/* <div className='py-3'>
-        <h3 className='text-center text-white/60'>
-          @2025 - All Rights Reserved by{' '}
-          <a
-            href='/#'
-            target='_blank'
-            className='hover:text-white'>
-            {' '}
-            GetNextJs Templates.com
-          </a>
-        </h3>
-      </div> */}
     </footer>
-  )
+  );
 }
 
 export default Footer

@@ -32,7 +32,7 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
       toast.success("Successfully logged in");
       setIsSignInOpen(false);
       if(res.data.user?.role === "user")
-        navigate("/home");
+        navigate("/");
       else
         navigate("/admin");
     } 
@@ -48,7 +48,7 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
 
   return (
     <>
-      <div className='mb-10 text-center mx-auto block max-w-[30%]'>
+      <div className='text-center justify-self-center block'>
         <Logo />
       </div>
       <SocialSignIn />

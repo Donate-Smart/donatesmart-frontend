@@ -7,12 +7,12 @@ export default function AddCase() {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [summary, setSummary] = useState("");
+  const [goal, setGoal] = useState(0);
   const [image, setImage] = useState(null);
 
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  // 🔐 حماية الصفحة
   useEffect(() => {
     if (!currentUser) {
       navigate("/");
@@ -25,9 +25,10 @@ export default function AddCase() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
+    formData.append("goal", goal);
     formData.append("category", category);
     formData.append("summary", summary);
-    formData.append("image", image); // actual file
+    formData.append("image", image);
     try {
       const res = await axios.post(
         "/api/cases",
@@ -35,7 +36,6 @@ export default function AddCase() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
         }
       );
@@ -72,6 +72,15 @@ export default function AddCase() {
           onChange={(e) => setDescription(e.target.value)}
           required
         ></textarea>
+
+        <input
+          type="text"
+          placeholder="goal"
+          style={styles.input}
+          value={goal}
+          onChange={(e) => setGoal(e.target.value)}
+          required
+        />
 
         <select
           style={styles.select}
