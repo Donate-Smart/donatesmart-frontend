@@ -17,6 +17,7 @@ code {
 html {
   scroll-behavior: smooth;
   line-height: 1.5;
+  scrollbar-color: var(--color-primary) var(--color-bg-soft);
 }
 
 h1 {

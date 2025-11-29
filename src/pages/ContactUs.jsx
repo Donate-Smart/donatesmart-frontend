@@ -21,7 +21,7 @@ export default function ContactUS() {
 
   //TODO: connect to backend, convert to axios
   useEffect(() => {
-    if (currentUser.role === "admin") navigate("/");
+    if (currentUser?.role === "admin") navigate("/");
     const isValid = Object.values(formData).every(
       (value) => value.trim() !== ''
     )

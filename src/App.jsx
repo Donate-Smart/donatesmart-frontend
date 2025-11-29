@@ -12,6 +12,9 @@ import Profile from "./pages/Profile";
 import AdminPanel from "./pages/AdminPanel";
 import EditProfile from "./pages/EditProfile";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import GoogleSuccessHandler from "./components/Auth/GoogleSuccessHandler";
+import NotFoundPage from "./pages/NotFound"; 
+
 
 import "./App.css";
 import { Toaster } from 'react-hot-toast';
@@ -21,6 +24,7 @@ import "aos/dist/aos.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import ContactUS from "./pages/ContactUs";
+import { AllCases } from "./pages/AllCases";
 
 
 function App() {
@@ -40,11 +44,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/add-case" element={<AddCase />} />
+          <Route path="/cases" element={<AllCases />} />
           <Route path="/case/:id" element={<CaseDetails />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/profile-edit" element={<EditProfile />} />
           <Route path="/contact" element={<ContactUS />} />
           <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/google-success" element={<GoogleSuccessHandler />} />
+           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         {/* <FooterOld /> */}
         <Footer />

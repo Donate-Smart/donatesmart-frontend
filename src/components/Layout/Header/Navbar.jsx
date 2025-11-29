@@ -73,8 +73,7 @@ const Navbar = () => {
       !signUpRef.current.contains(event.target) &&
       !event.target.closest(".toast")
     ) {
-      setIsSignUpOpen(false)
-      console.log(event.target);
+      setIsSignUpOpen(false);
     }
     if (
       mobileMenuRef.current &&
@@ -139,10 +138,10 @@ const Navbar = () => {
               Sign out
             </button>)}
             {isSignInOpen && (
-              <div className='fixed top-0 left-0 w-full h-screen bg-black/50 flex items-center justify-center z-50'>
+              <div className='fixed top-0  left-0 w-full h-screen bg-black/50 flex items-center justify-center z-50'>
                 <div
                   ref={signInRef}
-                  className='relative mx-auto w-full max-w-md overflow-hidden rounded-lg px-8 pt-14 pb-8 text-center bg-dark_grey/90 backdrop-blur-md bg-white'>
+                  className='relative mx-auto h-[95vh] w-full max-w-md overflow-auto rounded-lg px-8 pt-14 pb-8 text-center bg-dark_grey/90 backdrop-blur-md bg-white'>
                   <button
                     onClick={() => setIsSignInOpen(false)}
                     className='absolute top-0 right-0 mr-8 mt-8'
@@ -169,7 +168,7 @@ const Navbar = () => {
               <div className='fixed top-0 left-0 w-full h-screen bg-black/50 flex items-center justify-center z-50'>
                 <div
                   ref={signUpRef}
-                  className='relative mx-auto bg-white w-full max-w-md overflow-hidden rounded-lg bg-dark_grey/90 backdrop-blur-md px-8 pt-14 pb-8 text-center'>
+                  className='relative mx-auto h-[95vh] bg-white w-full max-w-md overflow-auto rounded-lg bg-dark_grey/90 backdrop-blur-md px-8 pt-14 pb-8 text-center'>
                   <button
                     onClick={() => setIsSignUpOpen(false)}
                     className='absolute top-0 right-0 mr-8 mt-8'
