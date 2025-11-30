@@ -22,8 +22,8 @@ const HeaderLink = ({ item }) => {
       onMouseLeave={handleMouseLeave}>
       {!currentUser && (<a
         href={item.href}
-        className={`text-base text-[var(--color-text-light)] flex font-medium hover:text-[var(--color-primary)] capitalized  ${
-          location.pathname === item.href  ? 'text-[var(--color-primary)] ' : 'text-[var(--color-text-light)]'
+        className={`text-base flex font-medium hover:text-[var(--color-primary)] capitalized  ${
+          location.pathname === item.href ? 'text-[var(--color-primary)] ' : 'text-[var(--color-text-light)]'
         }`}>
         {item.label}
         {item.submenu && (

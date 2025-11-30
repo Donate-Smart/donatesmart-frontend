@@ -156,7 +156,7 @@ export function AllCases() {
             ))): 
             (<div className="text-center py-20">
                 <p className="text-[var(--color-text-light)] text-lg">No cases found matching your search criteria.</p>
-              </div>)
+            </div>)
           }
         </div>
 

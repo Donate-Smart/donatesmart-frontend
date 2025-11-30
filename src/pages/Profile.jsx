@@ -17,8 +17,6 @@ export default function Profile() {
       return;
     }
 
-    if (currentUser.role === "admin") return;
-
     const fetchCases = async () => {
       try {
         const token = localStorage.getItem("token");

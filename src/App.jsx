@@ -25,6 +25,7 @@ import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
 import ContactUS from "./pages/ContactUs";
 import { AllCases } from "./pages/AllCases";
+import { ProfilePage } from "./pages/ProfilePage";
 
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
           <Route path="/add-case" element={<AddCase />} />
           <Route path="/cases" element={<AllCases />} />
           <Route path="/case/:id" element={<CaseDetails />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/profile-edit" element={<EditProfile />} />
           <Route path="/contact" element={<ContactUS />} />
           <Route path="/admin" element={<AdminPanel />} />

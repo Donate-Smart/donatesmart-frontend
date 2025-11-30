@@ -44,7 +44,7 @@ const Navbar = () => {
       { label: 'Home', href: '/' },
       { label: 'Admin Panel', href: '/admin'},
       { label: 'Cases', href: '/cases' },
-      { label: 'Profile', href: '/admin_profile'},
+      { label: 'Profile', href: '/profile'},
     ]
   }
   else{
@@ -104,7 +104,7 @@ const Navbar = () => {
 
   const signOutUser = () => {
       dispatch(logoutUser());
-      toast.success("user logged out");
+      toast.success("Logged out successfully!");
       navigate("/");
   };
 
