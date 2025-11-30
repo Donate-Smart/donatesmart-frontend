@@ -16,8 +16,7 @@ export default function AdminPanel() {
 
   // حماية الأدمن
   useEffect(() => {
-    if (!currentUser) navigate("/");
-    else if (currentUser.role !== "admin") navigate("/home");
+    if (!currentUser || currentUser.role !== "admin") navigate("/");
   }, [currentUser, navigate]);
 
   // جلب الإحصائيات (Dashboard)
@@ -28,8 +27,6 @@ export default function AdminPanel() {
           "/api/admin/analytics",
           { headers: { Authorization: `Bearer ${token}` },}
         );
-        console.log("analatycs:");
-        console.log(res.data);
         setAnalytics(res.data || []);
       } catch (err) {
         console.log("Analytics error:", err);
@@ -48,8 +45,6 @@ export default function AdminPanel() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        console.log("users:");
-        console.log(res.data);
         setUsers(res.data || []);
       } catch (err) {
         console.log("Users error:", err);
@@ -67,8 +62,6 @@ export default function AdminPanel() {
           "api/admin/pending-cases",
           { headers: { Authorization: `Bearer ${token}` },}
         );
-        console.log("cases");
-        console.log(res.data);
         setCases(res.data || {});
       } catch (err) {
         console.error("Cases error:", err);

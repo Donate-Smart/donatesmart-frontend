@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import toast from 'react-hot-toast'
-import SocialSignIn from '../SocialSignIn'
+import GoogleSignIn from '../GoogleSignIn'
 import Logo from '../../Layout/Header/Logo/Logo'
 import Loader from '../../Common/Loader'
 import axios from "axios";
@@ -19,7 +19,7 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
   })
   const [loading, setLoading] = useState(false)
 
-  const loginUser = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
@@ -32,12 +32,12 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
       toast.success("Successfully logged in");
       setIsSignInOpen(false);
       if(res.data.user?.role === "user")
-        navigate("/home");
+        navigate("/");
       else
         navigate("/admin");
     } 
     catch (err) {
-        const message = err.response?.data?.message || err.message || "Login failed";
+        const message = err.response?.data?.message || err.response?.data || err.message || "Login failed";
         console.log(err);
         toast.error(message);
     } 
@@ -48,21 +48,22 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
 
   return (
     <>
-      <div className='mb-10 text-center mx-auto block max-w-[30%]'>
+      <div className='text-center justify-self-center block'>
         <Logo />
       </div>
-      <SocialSignIn />
+      <GoogleSignIn />
       <span className="z-1 relative my-8 block text-center before:content-[''] before:absolute before:h-px before:w-[40%] before:bg-black/20 before:left-0 before:top-3 after:content-[''] after:absolute after:h-px after:w-[40%] after:bg-black/20 after:top-3 after:right-0">
         <span className='text-body-secondary relative z-10 inline-block px-3 text-base text-black'>
           OR
         </span>
       </span>
 
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={handleSubmit}>
         <div className='mb-[22px]'>
           <input
             type='email'
             placeholder='Email'
+            required
             onChange={(e) =>
               setLoginData({ ...loginData, email: e.target.value })
             }
@@ -76,12 +77,12 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
             onChange={(e) =>
               setLoginData({ ...loginData, password: e.target.value })
             }
+            required
             className='w-full rounded-md border border-solid bg-transparent px-5 py-3 text-base text-dark outline-hidden transition border-gray-200 placeholder:text-black/30 focus:border-[var(--color-primary)] focus-visible:shadow-none text-black'
           />
         </div>
         <div className='mb-9'>
           <button
-            onClick={loginUser}
             type='submit'
             className='bg-[var(--color-primary)] w-full py-3 rounded-lg text-18 font-medium border text-white border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-transparent hover:cursor-pointer transition duration-300 ease-in-out'>
             Sign In {loading && <Loader />}

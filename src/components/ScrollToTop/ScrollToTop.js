@@ -30,14 +30,6 @@ export default function ScrollToTop() {
   return (
     <div className='fixed bottom-8 right-8 z-999'>
       <div className='flex items-center gap-2.5'>
-        <a
-          href={
-            'https://getnextjstemplates.com/products/si-educational-free-nextjs-landing-page-template'
-          }
-          target='_blank'
-          className='hidden lg:block bg-[var(--color-primary)] text-white hover:bg-darkmode text-sm px-4 py-3.5 leading-none rounded-lg font-medium text-nowrap' rel="noreferrer">
-          Download Now
-        </a>
         {isVisible && (
           <div
             onClick={scrollToTop}

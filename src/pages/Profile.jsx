@@ -17,13 +17,10 @@ export default function Profile() {
       return;
     }
 
-    // ❗ لا نحمل الحالات إذا كان Admin
-    if (currentUser.role === "admin") return;
-
     const fetchCases = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/cases/my-cases", {
+        const res = await axios.get("/api/cases/my-cases", {
           headers: {
             Authorization: `Bearer ${token}`,
           },

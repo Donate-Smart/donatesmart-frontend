@@ -23,7 +23,7 @@ const HeaderLink = ({ item }) => {
       {!currentUser && (<a
         href={item.href}
         className={`text-base flex font-medium hover:text-[var(--color-primary)] capitalized  ${
-          location.pathname === item.href  ? 'text-[var(--color-primary)] ' : 'text-black'
+          location.pathname === item.href ? 'text-[var(--color-primary)] ' : 'text-[var(--color-text-light)]'
         }`}>
         {item.label}
         {item.submenu && (

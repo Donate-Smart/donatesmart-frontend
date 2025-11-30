@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast'
-import SocialSignUp from '../SocialSignUp'
+import GoogleSignUp from '../GoogleSignUp'
 import { useState } from 'react'
 import Logo from '../../Layout/Header/Logo/Logo'
 import Loader from '../../Common/Loader'
@@ -36,11 +36,11 @@ const SignUp = ({setIsSignInOpen, setIsSignUpOpen}) => {
 
   return (
     <>
-      <div className='mb-10 text-center mx-auto block max-w-[30%]'>
+      <div className='text-center justify-self-center block'>
         <Logo />
       </div>
 
-      <SocialSignUp />
+      <GoogleSignUp />
 
       <span className="z-1 relative my-8 block text-center before:content-[''] before:absolute before:h-px before:w-[40%] before:bg-black/20 before:left-0 before:top-3 after:content-[''] after:absolute after:h-px after:w-[40%] after:bg-black/20 after:top-3 after:right-0">
         <span className='text-body-secondary relative z-10 inline-block px-3 text-base text-black'>

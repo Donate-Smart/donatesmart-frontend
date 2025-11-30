@@ -1,7 +1,12 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
-const ContactForm = () => {
+export default function ContactUS() {
+  const navigate = useNavigate();
+  const currentUser = useSelector((state) => state.user.currentUser);
+
   const [formData, setFormData] = useState({
     firstname: '',
     lastname: '',
@@ -14,7 +19,9 @@ const ContactForm = () => {
   const [loader, setLoader] = useState(false)
   const [isFormValid, setIsFormValid] = useState(false)
 
+  //TODO: connect to backend, convert to axios
   useEffect(() => {
+    if (currentUser?.role === "admin") navigate("/");
     const isValid = Object.values(formData).every(
       (value) => value.trim() !== ''
     )
@@ -68,11 +75,13 @@ const ContactForm = () => {
         console.log(error.message)
       })
   }
+
   return (
-    <section id='contact'>
+    <div className="container">
+      <section id='contact'>
       <div className='container'>
         <div className='relative'>
-          <h2 className='mb-9 font-bold tracking-tight'>Get in Touch</h2>
+          <h2 className='mb-9 text-center font-bold tracking-tight'>Get in Touch</h2>
           <form
             onSubmit={handleSubmit}
             className='flex flex-wrap w-full m-auto justify-between'>
@@ -88,7 +97,7 @@ const ContactForm = () => {
                   value={formData.firstname}
                   onChange={handleChange}
                   placeholder='John'
-                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-primary focus:outline-0'
+                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0'
                 />
               </div>
               <div className='mx-0 my-2.5 flex-1'>
@@ -102,7 +111,7 @@ const ContactForm = () => {
                   value={formData.lastname}
                   onChange={handleChange}
                   placeholder='Doe'
-                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-primary focus:outline-0'
+                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0'
                 />
               </div>
             </div>
@@ -118,7 +127,7 @@ const ContactForm = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder='john.doe@example.com'
-                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-primary focus:outline-0'
+                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0'
                 />
               </div>
               <div className='mx-0 my-2.5 flex-1'>
@@ -134,7 +143,7 @@ const ContactForm = () => {
                   placeholder='+1234567890'
                   value={formData.phnumber}
                   onChange={handleChange}
-                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-primary focus:outline-0'
+                  className='w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0'
                 />
               </div>
             </div>
@@ -147,25 +156,25 @@ const ContactForm = () => {
                 name='Message'
                 value={formData.Message}
                 onChange={handleChange}
-                className='w-full mt-2 rounded-2xl px-5 py-3 border-solid border transition-all duration-500 focus:border-primary focus:outline-0'
+                className='w-full mt-2 rounded-2xl px-5 py-3 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0'
                 placeholder='Anything else you wanna communicate'></textarea>
             </div>
-            <div className='mx-0 my-2.5 w-full'>
+            <div className='text-center my-2.5 w-full'>
               <button
                 type='submit'
                 disabled={!isFormValid || loader}
-                className={`border leading-none px-6 text-lg font-medium py-4 rounded-full 
+                className={`border leading-none px-12 text-lg font-medium py-4 rounded-lg 
                     ${
                       !isFormValid || loader
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : 'bg-primary border-primary text-white hover:bg-transparent hover:text-primary cursor-pointer'
+                        : 'bg-[var(--color-primary)] border-[var(--color-primary)] text-white hover:bg-transparent hover:text-[var(--color-primary)] cursor-pointer'
                     }`}>
                 Submit
               </button>
             </div>
           </form>
           {showThanks && (
-            <div className='text-white bg-primary rounded-full px-4 text-lg mb-4.5 mt-1 absolute flex items-center gap-2'>
+            <div className='text-white bg-[var(--color-primary)] rounded-full px-4 text-lg mb-4.5 mt-1 absolute flex items-center gap-2'>
               Thank you for contacting us! We will get back to you soon.
               <div className='w-3 h-3 rounded-full animate-spin border-2 border-solid border-white border-t-transparent'></div>
             </div>
@@ -173,7 +182,6 @@ const ContactForm = () => {
         </div>
       </div>
     </section>
-  )
+    </div>
+  );
 }
-
-export default ContactForm
