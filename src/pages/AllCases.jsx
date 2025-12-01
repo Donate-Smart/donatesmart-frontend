@@ -94,10 +94,10 @@ export function AllCases() {
 
   useEffect(() => 
   {
-    if(cases)
+    if(cases && searchTerm)
       setFilteredCases(cases.filter((caseItem) => {
-        const matchesSearch = caseItem.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          caseItem.description?.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesSearch = caseItem.title?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          caseItem.description?.toLowerCase().includes(searchTerm?.toLowerCase());
         const matchesCategory = selectedCategory === 'all' || caseItem.category === selectedCategory;
         return matchesSearch && matchesCategory;
       }))
