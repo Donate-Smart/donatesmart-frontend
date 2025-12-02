@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function AddCase() {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [summary, setSummary] = useState("");
-  const [goal, setGoal] = useState(0);
+  const [goal, setGoal] = useState(1000);
   const [image, setImage] = useState(null);
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -55,7 +56,7 @@ export default function AddCase() {
       });
 
       console.log("Submitted case:", res.data);
-      alert("Case submitted successfully!");
+      toast.success("Case submitted successfully!");
       navigate("/profile");
     } catch (err) {
       console.error(

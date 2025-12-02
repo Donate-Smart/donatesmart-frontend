@@ -7,7 +7,7 @@ import CourseDetailSkeleton from '../components/Skeleton/CaseDetail/CaseDetailSk
 
 const allCasesDummy = [
   {
-    id: 1,
+    _id: 1,
     title: 'Education for Underprivileged Children',
     description: 'Help provide books, supplies, and educational resources to children in rural communities.',
     category: 'Education',
@@ -17,7 +17,7 @@ const allCasesDummy = [
     progress: 62.5,
   },
   {
-    id: 2,
+    _id: 2,
     title: 'Clean Water Access Initiative',
     description: 'Build wells and water filtration systems to provide clean drinking water.',
     category: 'Health',
@@ -27,7 +27,7 @@ const allCasesDummy = [
     progress: 55.3,
   },
   {
-    id: 3,
+    _id: 3,
     title: 'Medical Support for Families',
     description: 'Support families facing medical emergencies with treatment costs and medications.',
     category: 'Medical',
@@ -37,7 +37,7 @@ const allCasesDummy = [
     progress: 74.8,
   },
   {
-    id: 4,
+    _id: 4,
     title: 'Community Food Program',
     description: 'Provide nutritious meals to families struggling with food insecurity.',
     category: 'Food',
@@ -47,7 +47,7 @@ const allCasesDummy = [
     progress: 52,
   },
   {
-    id: 5,
+    _id: 5,
     title: 'Disaster Relief Fund',
     description: 'Emergency assistance for communities affected by natural disasters.',
     category: 'Emergency',
@@ -57,7 +57,7 @@ const allCasesDummy = [
     progress: 57,
   },
   {
-    id: 6,
+    _id: 6,
     title: 'Senior Care Support',
     description: 'Helping elderly individuals with healthcare, daily needs, and companionship.',
     category: 'Health',
@@ -80,9 +80,10 @@ export function AllCases() {
     const fetchCases = async () => {
       try {
         const res = await axios.get("/api/cases");
+        console.log(res.data);
         setCases(res.data || allCasesDummy);
       } catch (err) {
-        console.error("Error fetching cases:", err.response?.data || err.message);
+        console.error("Error fetching cases:", err.response, err.response?.data || err.message);
       }
       finally {
         setLoading(false)
@@ -94,7 +95,7 @@ export function AllCases() {
 
   useEffect(() => 
   {
-    if(cases && searchTerm)
+    if(cases)
       setFilteredCases(cases.filter((caseItem) => {
         const matchesSearch = caseItem.title?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
           caseItem.description?.toLowerCase().includes(searchTerm?.toLowerCase());

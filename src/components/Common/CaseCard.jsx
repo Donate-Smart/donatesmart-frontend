@@ -47,7 +47,7 @@ export function CaseCard({caseItem, buttonText}) {
                 </div>
               </div>
             {buttonText === "View Details"?
-            <Link to={`/case/${caseItem.id}`}>
+            <Link to={`/case/${caseItem._id}`}>
                 <button className={buttonStyle}>
                 {buttonText}
                 </button>
