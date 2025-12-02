@@ -16,7 +16,7 @@ export default function AddCase() {
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  // 🔐 حماية الصفحة
+  // حماية الصفحة
   useEffect(() => {
     if (!currentUser) {
       navigate("/");
@@ -47,16 +47,13 @@ export default function AddCase() {
     formData.append("summary", summary);
     if (image) formData.append("image", image);
     try {
-      const res = await axios.post(
-        "/api/cases",
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const res = await axios.post("/api/cases", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
       console.log("Submitted case:", res.data);
       alert("Case submitted successfully!");
       navigate("/profile");
