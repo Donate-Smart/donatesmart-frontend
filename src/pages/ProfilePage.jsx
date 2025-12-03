@@ -20,6 +20,7 @@ export function ProfilePage() {
   const [loading, setLoading] = useState(true)
   const currentUser = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   useEffect(() => 
   {
@@ -34,7 +35,12 @@ export function ProfilePage() {
     }))
     const fetchCases = async () => {
       try {
-        const res = await axios.get("/api/cases");
+        const res = await axios.get("/api/cases/my-cases", 
+          {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if(res && res.data)
           setMyCases(res.data);
       } catch (err) {
