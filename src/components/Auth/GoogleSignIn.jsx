@@ -6,7 +6,7 @@ const GoogleSignIn = () => {
 
   const handleSignIn = () => {
     setLoading(true);
-    // window.location.href = "http://localhost:5000/api/google/google";
+    window.location.href = "http://localhost:5000/api/google/google";
   };
 
 

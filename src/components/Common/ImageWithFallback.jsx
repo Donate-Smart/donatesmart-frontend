@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const ERROR_IMG_SRC = "https://placehold.co/1080x720/5c5c5c/fefff5.png?text=Broken%20image.&font=inter";
+const ERROR_IMG_SRC = "https://placehold.co/1080x720/5c5c5c/fefff5.png?text=No%20image.&font=inter";
 
 export function ImageWithFallback(props) {
   const [didError, setDidError] = useState(false)
