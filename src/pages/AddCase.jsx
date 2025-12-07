@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/Common/select';
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -96,7 +97,20 @@ export default function AddCase() {
           {/* Category with custom arrow */}
           <div style={styles.fieldGroup}>
             <label style={styles.label}>Category *</label>
-            <div style={styles.selectWrapper}>
+             <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="rounded-2xl bg-white h-12 border-2 border-gray-200 focus:border-[var(--color-primary)]">
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Categories</SelectItem>
+                  <SelectItem value="Education">Education</SelectItem>
+                  <SelectItem value="Health">Health</SelectItem>
+                  <SelectItem value="Medical">Medical</SelectItem>
+                  <SelectItem value="Food">Food</SelectItem>
+                  <SelectItem value="Emergency">Emergency</SelectItem>
+                </SelectContent>
+              </Select>
+            {/* <div style={styles.selectWrapper}>
               <select
                 style={styles.select}
                 value={category}
@@ -111,7 +125,7 @@ export default function AddCase() {
                 <option value="Housing">Housing</option>
               </select>
               <span style={styles.arrow}>⌄</span>
-            </div>
+            </div> */}
           </div>
 
           {/* Funding Goal */}
@@ -253,6 +267,8 @@ const styles = {
   selectWrapper: {
     position: "relative",
     width: "100%",
+    background: "white",
+    height: "3rem",
   },
   select: {
     width: "100%",

@@ -50,7 +50,7 @@ const NotFound = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-5 text-2xl font-semibold text-[var(--color-text-dark)] dark:text-white">
+                <h3 className="mb-5 text-2xl font-semibold text-[var(--color-text-dark)] ">
                   We Can&#39;t Seem to Find The Page You&#39;re Looking For.
                 </h3>
                 <p className="mb-8 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">
