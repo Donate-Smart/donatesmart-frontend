@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Layout/Header/Navbar";
 import Footer from "./components/Layout/Footer/Footer";
-import FooterOld from "./components/Layout/Footer/Footerold";
+
 
 //pages
 import Login from "./pages/Login";
@@ -9,7 +9,7 @@ import Register from "./pages/Register";
 import LandingPage from "./pages/LandingPage";
 import AddCase from "./pages/AddCase";
 import CaseDetails from "./pages/CaseDetails";
-import Profile from "./pages/Profile";
+
 import AdminPanel from "./pages/AdminPanel";
 import EditProfile from "./pages/EditProfile";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
@@ -51,8 +51,8 @@ function App() {
           <Route path="/add-case" element={<AddCase />} />
           <Route path="/cases" element={<AllCases />} />
           <Route path="/case/:id" element={<CaseDetails />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/profile-edit" element={<EditProfile />} />
+          <Route path="/Profile" element={<ProfilePage />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/contact" element={<ContactUS />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/google-success" element={<GoogleSuccessHandler />} />
