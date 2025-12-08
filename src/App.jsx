@@ -3,6 +3,7 @@ import Navbar from "./components/Layout/Header/Navbar";
 import Footer from "./components/Layout/Footer/Footer";
 
 
+//pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import LandingPage from "./pages/LandingPage";
@@ -13,7 +14,12 @@ import AdminPanel from "./pages/AdminPanel";
 import EditProfile from "./pages/EditProfile";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import GoogleSuccessHandler from "./components/Auth/GoogleSuccessHandler";
-import NotFoundPage from "./pages/NotFound"; 
+import NotFoundPage from "./pages/NotFound";
+import ContactUS from "./pages/ContactUs";
+import { AllCases } from "./pages/AllCases";
+import { ProfilePage } from "./pages/ProfilePage";
+import { DonatePage } from "./pages/DonatePage";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 
 import "./App.css";
@@ -23,9 +29,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
-import ContactUS from "./pages/ContactUs";
-import { AllCases } from "./pages/AllCases";
-import { ProfilePage } from "./pages/ProfilePage";
+
 
 
 function App() {
@@ -52,11 +56,14 @@ function App() {
           <Route path="/contact" element={<ContactUS />} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/google-success" element={<GoogleSuccessHandler />} />
-           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/donate/:id" element={<DonatePage />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="*" element={<NotFoundPage />} />
+          
         </Routes>
         {/* <FooterOld /> */}
         <Footer />
-        {/* notification animation extension */}
+        {/* notification popup extension */}
         <Toaster 
           position="bottom-center" 
           closeOnClick

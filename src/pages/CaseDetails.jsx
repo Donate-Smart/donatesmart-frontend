@@ -1,11 +1,32 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { ThreeDots } from 'react-loader-spinner'
+
 
 export default function CaseDetails() {
   const { id } = useParams();
   const [caseData, setCaseData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const currentUser = useSelector((state) => state.user.currentUser);
+
+  const navigate = useNavigate();
+
+  const goToDonation = () => {
+    if(!currentUser) toast("Please Login first");
+    else
+      navigate(`/donate/${id}`);
+  }
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }, []);
 
   useEffect(() => {
     const fetchCase = async () => {
@@ -27,17 +48,47 @@ export default function CaseDetails() {
 
   if (loading) {
     return (
-      <h2 style={{ textAlign: "center", marginTop: "40px" }}>
-        Loading case details...
-      </h2>
+      <section className="pt-8 pb-20">
+        <div className="container mx-auto h-screen">
+          <h3 className="mb-9 text-2xl text-center font-semibold text-[var(--color-text-dark)] ">
+            Loading Case Details 
+          </h3>
+          <ThreeDots
+            visible={true}
+            height="60"
+            width="60"
+            color="var(--color-primary"
+            radius="9"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClass="justify-center"
+            />
+        </div>
+      </section>
     );
   }
+  
 
   if (!caseData) {
     return (
-      <h2 style={{ textAlign: "center", marginTop: "40px" }}>
-        Case not found.
-      </h2>
+      <section className="pt-8 pb-20">
+        <div className="container mx-auto">
+          <h3 className="mb-5 text-center text-2xl font-semibold text-[var(--color-text-dark)] ">
+            Can&#39;t  Find The Case You&#39;re Looking For.
+          </h3>
+          <p className="mb-8 text-center  text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">
+            The case you are looking for does not exist. It might have
+            been moved or deleted.
+          </p>
+          <Link
+            to="/"
+            className="rounded-md px-7 py-3 block w-fit mx-auto text-base font-medium text-white transition bg-[var(--color-primary)] hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] hover:cursor-pointer"
+          >
+            Go To Home
+          </Link>
+            
+        </div>
+      </section>
     );
   }
 
@@ -115,7 +166,7 @@ export default function CaseDetails() {
               </div>
 
               {/* Donate button */}
-              <button style={styles.donateButton}>Donate Now</button>
+              {currentUser?.role !== "admin" && <button onClick={goToDonation} style={styles.donateButton}>Donate Now</button>}
             </div>
 
             {/* Info box (اختياري، بسيط) */}
