@@ -80,8 +80,9 @@ export function AllCases() {
     const fetchCases = async () => {
       try {
         const res = await axios.get("/api/cases");
-        console.log(res.data);
-        setCases(res.data || allCasesDummy);
+        //console.log(res.data);
+        const activeCases = res.data.filter(c => c.donations < c.goal);
+        setCases(activeCases || allCasesDummy);
       } catch (err) {
         console.error("Error fetching cases:", err.response, err.response?.data || err.message);
       }

@@ -54,10 +54,15 @@ export default function AddCase() {
     }
 
     const numericGoal = Number(goal);
+    console.log(numericGoal, numericGoal < 100);
     if (!goal) {
       newErrors.goal = "Funding goal is required.";
     } else if (Number.isNaN(numericGoal) || numericGoal <= 0) {
       newErrors.goal = "Funding goal must be a positive number.";
+    } else if (numericGoal < 100){
+      newErrors.goal = "Funding goal must be at least $100!"
+    } else if (numericGoal > 100000000){
+      newErrors.goal = "Funding goal must not exeeed $100.000.000!"
     }
 
     if (!description.trim()) {
@@ -190,7 +195,11 @@ export default function AddCase() {
           {/* Category with custom arrow */}
           <div style={styles.fieldGroup}>
             <label style={styles.label}>Category *</label>
-             <Select value={category} onValueChange={setCategory}>
+             <Select value={category} onValueChange=
+                {(e) => {
+                  setCategory(e);
+                  setErrors((prev) => ({ ...prev, category: undefined }));
+                }}>
                 <SelectTrigger className="rounded-2xl bg-white h-12 border-2 border-gray-200 focus:border-[var(--color-primary)]">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
@@ -203,6 +212,10 @@ export default function AddCase() {
                   <SelectItem value="Emergency">Emergency</SelectItem>
                 </SelectContent>
               </Select>
+              {errors.category && (
+              <p style={styles.errorText}>{errors.category}</p>
+              )}
+          </div>
             {/* <div style={styles.selectWrapper}>
               <select
                 style={styles.select}
@@ -221,18 +234,11 @@ export default function AddCase() {
               </select>
               <span style={styles.arrow}>⌄</span>
             </div> */}
-            </div>
-            {errors.category && (
-              <p style={styles.errorText}>{errors.category}</p>
-            )}
-          </div>
-
           {/* Funding Goal */}
           <div style={styles.fieldGroup}>
             <label style={styles.label}>Funding Goal ($) *</label>
             <input
               type="number"
-              min="1"
               placeholder="Enter your funding goal"
               style={styles.input}
               value={goal}
@@ -310,12 +316,14 @@ export default function AddCase() {
           {/* Submit */}
           <button
             type="submit"
+            className='lg:block bg-[var(--color-primary)] text-white font-medium hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] rounded-xl shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed'
             style={{
               ...styles.submitButton,
               opacity: isSubmitting ? 0.7 : 1,
               cursor: isSubmitting ? "not-allowed" : "pointer",
             }}
             disabled={isSubmitting}
+
           >
             {isSubmitting ? "Submitting..." : "Submit Case for Review"}
           </button>
@@ -470,12 +478,8 @@ const styles = {
     width: "100%",
     padding: "16px",
     borderRadius: "20px",
-    border: "none",
-    background: "linear-gradient(90deg, #7FDB34 0%, #6BC428 100%)",
-    color: "white",
     fontWeight: "600",
     fontSize: "16px",
-    boxShadow: "0 10px 24px rgba(127,219,52,0.35)",
     cursor: "pointer",
   },
   errorText: {

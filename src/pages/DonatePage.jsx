@@ -41,7 +41,7 @@ export function DonatePage() {
   const totalAmount = coverFees ? currentAmount + processingFee : currentAmount;
 
   useEffect(() =>{
-    if(!currentUser || currentUser.role === "admin" ) navigate('/');
+    if(!currentUser || currentUser.role === "admin") navigate('/');
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
@@ -54,7 +54,8 @@ export function DonatePage() {
       try {
         const res = await axios.get(`/api/cases/${id}`);
         setCaseData(res.data || dummyData);
-        console.log(res.data);
+        //if(currentUser?._id === res.data?.createdBy ) navigate('/');
+
       } catch (err) {
         console.error(
           "Error fetching case:",
