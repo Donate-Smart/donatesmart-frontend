@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import axios from "axios";
 
@@ -7,7 +7,6 @@ function PaymentSuccess() {
   const [session, setSession] = useState(null);
   const [params] = useSearchParams();
   const sessionId = params.get("session_id");
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCase = async () => {
@@ -23,16 +22,28 @@ function PaymentSuccess() {
       }
     };
 
+     
+
     fetchCase();
+    
   }, [sessionId]);
+  useEffect(() => {
+    const donateToCase = async(caseId, amount) => {
+      try {
+        const res = await axios.patch(
+          `/api/cases/${caseId}/donate`,
+          { amount }
+        );
+        console.log(res.data);
+      } catch (err) {
+        console.error("Donation update failed:", err);
+      }
+    }
+    console.log(session?.metadata?.caseId);
+    donateToCase(session?.metadata?.caseId, session?.amount_total/100)
 
-
-
-  useEffect(()=>{
-    // setTimeout(()=>{
-    //     navigate('/');
-    // }, 3000);
-  }, [])
+  },
+  [session]);
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center px-6 py-12">
@@ -79,7 +90,7 @@ function PaymentSuccess() {
 
           {/* Action buttons */}
           <div className="space-y-3">
-            <Link to={`/case/${session?.caseId}`} className="block">
+            <Link to={`/case/${session?.metadata?.caseId}`} className="block">
               <button
                 variant="outline"
                 className="w-full flex items-center justify-center gap-2 py-6 rounded-2xl border-2 border-gray-300 text-[var(--color-text-light)] hover:bg-gray-50 transition-all"

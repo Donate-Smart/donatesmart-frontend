@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Layout/Header/Navbar";
 import Footer from "./components/Layout/Footer/Footer";
 
-
 //pages
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -21,7 +20,6 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { DonatePage } from "./pages/DonatePage";
 import PaymentSuccess from "./pages/PaymentSuccess";
 
-
 import "./App.css";
 import { Toaster } from 'react-hot-toast';
 import { useEffect } from "react";
@@ -29,7 +27,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
-
 
 
 function App() {
@@ -59,7 +56,6 @@ function App() {
           <Route path="/donate/:id" element={<DonatePage />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="*" element={<NotFoundPage />} />
-          
         </Routes>
         {/* <FooterOld /> */}
         <Footer />

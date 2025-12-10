@@ -32,7 +32,7 @@ export function CaseCard({caseItem, buttonText}) {
               alt={caseItem.title}
               className="w-full h-full object-cover"
             />
-            <Slot className="border-transparent bg-[var(--color-primary)] text-[var(--color-primary)] [a&]:hover:bg-[#7fdb34]/90 absolute top-4 right-4 bg-white/90 text-[var(--color-primary)] border-0 px-3 py-1 rounded-full shadow-lg">
+            <Slot className="border-transparent bg-[var(--color-primary)] text-[var(--color-primary)] [a&]:hover:bg-[#7fdb34]/90 absolute top-4 right-4 bg-white/90 border-0 px-3 py-1 rounded-full shadow-lg">
               {caseItem.category}
             </Slot>
           </div>
@@ -46,7 +46,7 @@ export function CaseCard({caseItem, buttonText}) {
               {/* Progress */}
               <div className="space-y-2 mt-5">
                 <Progress 
-                  value={(caseItem.goal? (caseItem.goal-caseItem.donations)/caseItem.goal : 0) * 100} 
+                  value={(caseItem.goal? (caseItem.donations)/caseItem.goal : 0) * 100} 
                   className="relative w-full overflow-hidden rounded-full h-2 bg-gray-200"
                 />
                 <div className="flex justify-between text-sm">
@@ -66,7 +66,9 @@ export function CaseCard({caseItem, buttonText}) {
               </button>
           </Link>
           : buttonText.length === 0? null
-          :( currentUser?.role !== "admin" && <div>
+          :( currentUser?.role !== "admin" && 
+             currentUser?._id !== caseItem?.createdBy &&
+          <div>
               <button className={buttonStyle} onClick={goToDonation}>
               {buttonText}
               </button>
