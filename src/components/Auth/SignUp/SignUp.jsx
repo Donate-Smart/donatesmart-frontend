@@ -21,7 +21,6 @@ const SignUp = ({setIsSignInOpen, setIsSignUpOpen}) => {
     await axios.post("api/auth/register", finalData)
     .then((res) => {
       toast.success('Successfully registered');
-      console.log(res.data);
       setLoading(false)
       setIsSignInOpen(true);
       setIsSignUpOpen(false);

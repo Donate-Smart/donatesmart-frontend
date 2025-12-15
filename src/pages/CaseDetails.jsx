@@ -5,13 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { ThreeDots } from 'react-loader-spinner'
+import CaseDetailSkeleton from "../components/Skeleton/CaseDetail/CaseDetailSkeleton";
+import { CaseCard } from "../components/Common/CaseCard";
 
 
 export default function CaseDetails() {
   const { id } = useParams();
   const [caseData, setCaseData] = useState(null);
+  const [similarCases, setSimilarCases] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadingSimilar, setLoadingSimilar] = useState(true);
   const currentUser = useSelector((state) => state.user.currentUser);
+  console.log(JSON.stringify(currentUser));
 
   const navigate = useNavigate();
 
@@ -33,6 +38,7 @@ export default function CaseDetails() {
       try {
         const res = await axios.get(`/api/cases/${id}`);
         setCaseData(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error(
           "Error fetching case:",
@@ -42,8 +48,23 @@ export default function CaseDetails() {
         setLoading(false);
       }
     };
+    const getSimilar = async () => {
+      try {
+        const res = await axios.get(`/api/cases/${id}/similar`);
+        setSimilarCases(res.data);
+        console.log(res.data);
+      } catch (err) {
+        console.error(
+          "Error fetching cases:",
+          err.response?.data || err.message
+        );
+      } finally {
+        setLoadingSimilar(false);
+      }
+    };
 
     fetchCase();
+    getSimilar();
   }, [id]);
 
   if (loading) {
@@ -96,7 +117,8 @@ export default function CaseDetails() {
     ? `http://localhost:5000/uploads/${caseData.image}`
     : "https://via.placeholder.com/900x300?text=No+Image";
 
-  const goal = Number(caseData.target) || 0;
+  console.log(caseData);
+  const goal = Number(caseData.goal) || 0;
   const raised = Number(caseData.donations) || 0;
   const progress =
     goal > 0 ? Math.min(100, Math.round((raised / goal) * 100)) : 0;
@@ -139,6 +161,7 @@ export default function CaseDetails() {
           {/* RIGHT SIDE: Progress + Donate */}
           <div style={styles.rightColumn}>
             {/* Progress / Donation box */}
+            {caseData?.status === "approved" &&
             <div style={styles.card}>
               <div style={styles.progressTop}>
                 <div>
@@ -152,22 +175,28 @@ export default function CaseDetails() {
               </div>
 
               {/* Progress bar */}
-              <div style={styles.progressWrapper}>
-                <div
-                  style={{
-                    ...styles.progressFill,
-                    width: `${progress}%`,
-                  }}
-                />
-              </div>
+                <div style={styles.progressWrapper}>
+                  <div
+                    style={{
+                      ...styles.progressFill,
+                      width: `${progress}%`,
+                    }}
+                  />
+                </div>
 
-              <div style={styles.progressLabelRow}>
-                <span style={styles.progressPercent}>{progress}% funded</span>
-              </div>
+                <div style={styles.progressLabelRow}>
+                  <span style={styles.progressPercent}>{progress}% funded</span>
+                </div>
 
               {/* Donate button */}
-              {currentUser?.role !== "admin" && <button onClick={goToDonation} style={styles.donateButton}>Donate Now</button>}
-            </div>
+              {currentUser?.role !== "admin" &&
+              currentUser?._id !== caseData?.createdBy &&
+              <button onClick={goToDonation} 
+              className='bg-[var(--color-primary)] text-white hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] rounded-full shadow-md hover:shadow-lg'
+              style={styles.donateButton}>
+                Donate Now
+              </button>}
+            </div>}
 
             {/* Info box (اختياري، بسيط) */}
             <div style={styles.card}>
@@ -179,8 +208,33 @@ export default function CaseDetails() {
                 <strong>Donations so far:</strong> ${raised.toLocaleString()}
               </p>
             </div>
+
+            {currentUser?._id === caseData?.createdBy &&  
+              <div style={styles.card}>
+                <h3 style={styles.sectionTitle}>Status 
+                  <span className={caseData.status === "approved"? 
+                    "text-[var(--color-primary)] ml-2": 
+                    caseData.status === "pending"?
+                    "text-orange-600 ml-2":
+                    "text-red-950 ml-2"
+                  }>{caseData.status}
+                    </span>
+                </h3>
+              </div>}
           </div>
         </div>
+        <h3 className="text-xl font-semibold text-[var(--color-text-dark)]  my-6">
+          Similar Cases:
+        </h3>
+        <div className="grid md:grid-cols-3 gap-8 mt-6">
+        {loading? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <CaseDetailSkeleton key={i} />
+              ))
+            ): similarCases.map((caseItem) => (
+          <CaseCard caseItem={caseItem} buttonText={"View Details"} />
+        ))}
+      </div>
       </div>
     </div>
   );
@@ -312,14 +366,9 @@ const styles = {
     width: "100%",
     padding: "14px",
     borderRadius: "18px",
-    border: "none",
-    background:
-      "linear-gradient(90deg, #7FDB34 0%, #6BC428 100%)",
-    color: "#FFFFFF",
     fontWeight: "600",
     fontSize: "16px",
     cursor: "pointer",
-    boxShadow: "0 10px 24px rgba(127,219,52,0.35)",
   },
   infoText: {
     fontSize: "14px",

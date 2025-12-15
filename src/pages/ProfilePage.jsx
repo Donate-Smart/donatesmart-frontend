@@ -93,10 +93,10 @@ export function ProfilePage() {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-3">
+              <div className="flex flex-row gap-3">
                 <button
                   onClick={() => navigate("/edit-profile")}
-              className='hidden lg:block bg-transparent text-[var(--color-primary)] border hover:bg-[var(--color-primary)] border-[var(--color-primary)] hover:text-white duration-300 px-6 py-2 rounded-full hover:cursor-pointer shadow-md hover:shadow-lg'
+                  className='flex flex-row items-center bg-transparent text-[var(--color-primary)] border hover:bg-[var(--color-primary)] border-[var(--color-primary)] hover:text-white duration-300 px-6 py-2 rounded-full hover:cursor-pointer shadow-md hover:shadow-lg'
                 >
                   <Icon icon="lucide:edit" className="w-4 h-4 mr-2" />
                   Edit Profile
@@ -156,7 +156,7 @@ export function ProfilePage() {
                       </p>
 
                       <button
-                        className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] hover:from-[var(--color-primary-dark)] hover:to-[var(--color-primary)] text-white rounded-xl px-4 py-2 transition-all duration-300"
+                        className='bg-[var(--color-primary)] text-white text-base font-medium hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] px-4 py-2 rounded-xl hover:cursor-pointer shadow-md transition-all hover:shadow-lg'
                         onClick={() => navigate(`/case/${c._id}`)}
                       >
                         View Case

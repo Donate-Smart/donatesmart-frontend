@@ -26,7 +26,6 @@ const Signin = ({setIsSignInOpen, setIsSignUpOpen}) => {
     try {
       const res = await axios.post("/api/auth/login", loginData);
 
-      console.log(res);
       localStorage.setItem("token", res.data.token);
       dispatch(setUser(res.data.user));
       toast.success("Successfully logged in");
