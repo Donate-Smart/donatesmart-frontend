@@ -18,11 +18,16 @@ export function CaseCard({caseItem, buttonText}) {
   
   }
 
+  const goToDetails = () => {
+    navigate(`/case/${caseItem._id}`);
+  }
+
 
   const buttonStyle = "w-full py-1 bg-[var(--color-primary)] text-white text-base font-bold hover:bg-transparent hover:text-[var(--color-primary)] border border-[var(--color-primary)] rounded-xl shadow-md hover:shadow-lg duration-300 transition-all hover:cursor-pointer";
 
   return(
   <div key={caseItem.id}
+        onClick={goToDetails}
           className="bg-white rounded-3xl overflow-hidden shadow-[12px_12px_24px_rgba(0,0,0,0.1),-12px_-12px_24px_rgba(255,255,255,0.9)] hover:shadow-[16px_16px_32px_rgba(0,0,0,0.15),-16px_-16px_32px_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-2"
         >
           {/* Image */}
