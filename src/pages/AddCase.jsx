@@ -19,7 +19,33 @@ export default function AddCase() {
 
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
+  const [aiError, setAiError] = useState("");
 
+  const handleGenerateSummary = async () => {
+    setIsGenerating(true);
+    setAiError("");
+    setSummary("");
+
+    try {
+      const res = await fetch("http://localhost:5000/api/ai/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description })
+      });
+      const json = await res.json();
+
+      if (!json.success) {
+        throw new Error(json.error || "AI request failed");
+      }
+
+      setSummary(json.data.summary || "");
+      if (json.data.error) setAiError(json.data.error); // show backend AI error if any
+    } catch (e) {
+      setAiError(e.message);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
   // حماية الصفحة
   useEffect(() => {
     if (!currentUser) {
@@ -27,17 +53,18 @@ export default function AddCase() {
     }
   }, [currentUser, navigate]);
 
-  const handleGenerateAI = () => {
-    if (!title) return;
-    setIsGenerating(true);
+  // const handleGenerateAI = () => {
+  //   if (!title) return;
+  //   setIsGenerating(true);
 
-    setTimeout(() => {
-      setSummary(
-        `This case aims to ${title.toLowerCase() || "support a charitable cause"}. The initiative focuses on providing essential resources and support to those in need. With your contribution, we can make a meaningful difference in the lives of people who need it most. Every donation helps us get closer to our goal and creates a lasting positive impact in the community.`
-      );
-      setIsGenerating(false);
-    }, 1500);
-  };
+  //   setTimeout(() => {
+  //     setSummary(
+  //       `This case aims to ${title.toLowerCase() || "support a charitable cause"}. The initiative focuses on providing essential resources and support to those in need. With your contribution, we can make a meaningful difference in the lives of people who need it most. Every donation helps us get closer to our goal and creates a lasting positive impact in the community.`
+  //     );
+  //     setIsGenerating(false);
+  //   }, 1500);
+  // };
+
 
   // ✅ validation لكل الحقول المطلوبة
   const validateForm = () => {
@@ -221,7 +248,7 @@ export default function AddCase() {
               </select>
               <span style={styles.arrow}>⌄</span>
             </div> */}
-            </div>
+            
             {errors.category && (
               <p style={styles.errorText}>{errors.category}</p>
             )}
@@ -288,7 +315,7 @@ export default function AddCase() {
               <span style={styles.label}>AI-Generated Summary</span>
               <button
                 type="button"
-                onClick={handleGenerateAI}
+                onClick={handleGenerateSummary}
                 disabled={isGenerating || !title}
                 style={{
                   ...styles.aiButton,
@@ -306,7 +333,11 @@ export default function AddCase() {
               </div>
             )}
           </div>
-
+{aiError && (
+        <div style={{ marginTop: 8, color: "tomato" }}>
+          <strong>Note:</strong> {aiError} (showing fallback if AI failed)
+        </div>
+      )}
           {/* Submit */}
           <button
             type="submit"
