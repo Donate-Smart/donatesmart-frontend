@@ -21,31 +21,34 @@ export default function AddCase() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const [aiError, setAiError] = useState("");
 
-  const handleGenerateSummary = async () => {
-    setIsGenerating(true);
-    setAiError("");
-    setSummary("");
+ const handleGenerateSummary = async () => {
+  setIsGenerating(true);
+  setAiError("");
+  setSummary("");
 
-    try {
-      const res = await fetch("http://localhost:5000/api/ai/summarize", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, description })
-      });
-      const json = await res.json();
+  try {
+    const res = await fetch("http://localhost:5000/api/ai/summarize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title, description })
+    });
 
-      if (!json.success) {
-        throw new Error(json.error || "AI request failed");
-      }
+    const json = await res.json();
 
-      setSummary(json.data.summary || "");
-      if (json.data.error) setAiError(json.data.error); // show backend AI error if any
-    } catch (e) {
-      setAiError(e.message);
-    } finally {
-      setIsGenerating(false);
+    // إذا رجع ملخص، اعرضه مباشرة
+    if (json.success && json.data?.summary) {
+      setSummary(json.data.summary);
+    } else {
+      // إذا ما فيه ملخص، اعرض الخطأ
+      setAiError(json.data?.error || "AI request failed");
     }
-  };
+  } catch (e) {
+    setAiError(e.message);
+  } finally {
+    setIsGenerating(false);
+  }
+};
+
   // حماية الصفحة
   useEffect(() => {
     if (!currentUser) {
@@ -53,17 +56,6 @@ export default function AddCase() {
     }
   }, [currentUser, navigate]);
 
-  // const handleGenerateAI = () => {
-  //   if (!title) return;
-  //   setIsGenerating(true);
-
-  //   setTimeout(() => {
-  //     setSummary(
-  //       `This case aims to ${title.toLowerCase() || "support a charitable cause"}. The initiative focuses on providing essential resources and support to those in need. With your contribution, we can make a meaningful difference in the lives of people who need it most. Every donation helps us get closer to our goal and creates a lasting positive impact in the community.`
-  //     );
-  //     setIsGenerating(false);
-  //   }, 1500);
-  // };
 
 
   // ✅ validation لكل الحقول المطلوبة
@@ -243,29 +235,11 @@ export default function AddCase() {
               <p style={styles.errorText}>{errors.category}</p>
               )}
           </div>
-            {/* <div style={styles.selectWrapper}>
-              <select
-                style={styles.select}
-                value={category}
-                onChange={(e) => {
-                  setCategory(e.target.value);
-                  setErrors((prev) => ({ ...prev, category: undefined }));
-                }}
-              >
-                <option value="">Select a category</option>
-                <option value="Education">Education</option>
-                <option value="Medical">Medical</option>
-                <option value="Emergency">Emergency</option>
-                <option value="Food">Food</option>
-                <option value="Housing">Housing</option>
-              </select>
-              <span style={styles.arrow}>⌄</span>
-            </div> */}
             
             {errors.category && (
               <p style={styles.errorText}>{errors.category}</p>
             )}
-          </div>
+        
 
           {/* Funding Goal */}
           <div style={styles.fieldGroup}>
