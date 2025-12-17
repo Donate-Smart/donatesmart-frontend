@@ -133,7 +133,7 @@ const validateForm = () => {
                     ref={refs.firstname}
                     value={formData.firstname}
                     onChange={handleChange}
-                    placeholder="John"
+                    placeholder="Fname"
                     className="w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0"
                   />{errors.firstname && <p className="text-red-500 text-sm">{errors.firstname}</p>}
                 </div>
@@ -151,7 +151,7 @@ const validateForm = () => {
                     ref={refs.lastname}
                     value={formData.lastname}
                     onChange={handleChange}
-                    placeholder="Doe"
+                    placeholder="Lname"
                     className="w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0"
                   />{errors.lastname && <p className="text-red-500 text-sm">{errors.lastname}</p>}
                 </div>
@@ -171,7 +171,7 @@ const validateForm = () => {
                     ref={refs.email}
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="john.doe@example.com"
+                    placeholder="YourName@example.com"
                     className="w-full text-base px-4 rounded-2xl py-2.5 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0"
                   />{errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                 </div>
@@ -205,7 +205,7 @@ const validateForm = () => {
                   value={formData.Message}
                   onChange={handleChange}
                   className="w-full mt-2 rounded-2xl px-5 py-3 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0"
-                  placeholder="Anything else you wanna communicate"
+                  placeholder="Feel free to write your message here...We are always ready to assist you !"
                 ></textarea>{errors.Message && <p className="text-red-500 text-sm">{errors.Message}</p>}
               </div>
               <div className="text-center my-2.5 w-full">

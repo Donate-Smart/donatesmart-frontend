@@ -28,27 +28,25 @@ const Navbar = () => {
 
   let headerData = [];
 
-  if(currentUser?.role === "user")
-  {
+  if (currentUser?.role === "user") {
     headerData = [
       { label: 'Home', href: '/' },
-      { label: 'Cases', href: '/cases'},
+      { label: 'Cases', href: '/cases' },
       { label: 'Add Case', href: '/add-case' },
       { label: 'Contact Us', href: '/contact' },
-      { label: 'Profile', href: '/profile'},
+      { label: 'Profile', href: '/profile' },
     ]
   }
-  else if(currentUser?.role === "admin")
-  {
-     headerData = [
+  else if (currentUser?.role === "admin") {
+    headerData = [
       { label: 'Home', href: '/' },
-      { label: 'Admin Panel', href: '/admin'},
+      { label: 'Admin Panel', href: '/admin' },
       { label: 'Cases', href: '/cases' },
-      { label: 'Profile', href: '/profile'},
+      { label: 'Profile', href: '/profile' },
     ]
   }
-  else{
-     headerData = [
+  else {
+    headerData = [
       { label: 'Home', href: '/' },
       { label: 'All Cases', href: '/cases' },
       { label: 'Contact Us', href: '/contact' },
@@ -103,19 +101,18 @@ const Navbar = () => {
   }, [isSignInOpen, isSignUpOpen, navbarOpen])
 
   const signOutUser = () => {
-      dispatch(logoutUser());
-      toast.success("Logged out successfully!");
-      navigate("/");
+    dispatch(logoutUser());
+    toast.success("Logged out successfully!");
+    navigate("/");
   };
 
   return (
-    <header 
-      className={`sticky top-0 z-50 w-full bg-white/80 backdrop-blur-sm transition-all duration-300 ${
-        sticky ? ' shadow-lg py-1' : 'shadow-sm py-0'
-      }`}>
+    <header
+      className={`sticky top-0 z-50 w-full bg-white/80 backdrop-blur-sm transition-all duration-300 ${sticky ? ' shadow-lg py-1' : 'shadow-sm py-0'
+        }`}>
       <div className='container mx-auto px-6 py-4'>
-        <div className='flex items-center justify-between'> 
-          <Logo  />
+        <div className='flex items-center justify-between'>
+          <Logo />
           <nav className='hidden md:flex items-center gap-8'>
             {headerData.map((item, index) => (
               <HeaderLink key={index} item={item} />
@@ -123,7 +120,7 @@ const Navbar = () => {
           </nav>
           {/* sign in/up buttons and popup menu */}
           <div className='flex items-center gap-4'>
-            {!currentUser && (<button  
+            {!currentUser && (<button
               className='hidden lg:block bg-transparent text-[var(--color-primary)] border hover:bg-[var(--color-primary)] border-[var(--color-primary)] hover:text-white duration-300 px-6 py-2 rounded-full hover:cursor-pointer shadow-md hover:shadow-lg'
               onClick={() => {
                 setIsSignInOpen(true)
@@ -153,7 +150,7 @@ const Navbar = () => {
                       className='text-black hover:text-[var(--color-primary)] inline-block hover:cursor-pointer'
                     />
                   </button>
-                  <Signin  setIsSignInOpen={setIsSignInOpen} setIsSignUpOpen={setIsSignUpOpen} />
+                  <Signin setIsSignInOpen={setIsSignInOpen} setIsSignUpOpen={setIsSignUpOpen} />
                 </div>
               </div>
             )}
@@ -200,9 +197,8 @@ const Navbar = () => {
         )}
         <div
           ref={mobileMenuRef}
-          className={`lg:hidden fixed top-0 right-0 h-full w-full bg-white shadow-lg transform transition-transform duration-300 max-w-xs ${
-            navbarOpen ? 'translate-x-0' : 'translate-x-full'
-          } z-50`}>
+          className={`lg:hidden fixed top-0 right-0 h-full w-full bg-white shadow-lg transform transition-transform duration-300 max-w-xs ${navbarOpen ? 'translate-x-0' : 'translate-x-full'
+            } z-50`}>
           <div className='flex items-center justify-between p-4'>
             <h2 className='text-lg font-bold text-midnight_text'>
               <Logo />
@@ -220,8 +216,14 @@ const Navbar = () => {
           </div>
           <nav className='flex flex-col items-start p-4'>
             {headerData.map((item, index) => (
-              <MobileHeaderLink key={index} item={item} />
+              <MobileHeaderLink
+                key={index}
+                item={item}
+                onNavigate={() => setNavbarOpen(false)}
+              />
             ))}
+
+
             <div className='mt-4 flex flex-col gap-4 w-full'>
               {currentUser && (<button
                 className='bg-[var(--color-primary)] text-white px-4 py-2 rounded-lg border  border-[var(--color-primary)] hover:text-[var(--color-primary)] hover:bg-transparent hover:cursor-pointer transition duration-300 ease-in-out'

@@ -34,11 +34,7 @@ function Footer() {
                   Featured Cases
                 </Link>
               </li>
-              <li>
-                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
-                  Success Stories
-                </Link>
-              </li>
+              
             </ul>
           </div>
 
@@ -47,12 +43,12 @@ function Footer() {
             <h4 className="text-[var(--color-text-dark)] mb-4">Support</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                <Link to="/contact" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
                   Help Center
                 </Link>
               </li>
               <li>
-                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                <Link to="/contact" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
                   Contact Us
                 </Link>
               </li>
@@ -105,7 +101,7 @@ function Footer() {
         <div className="border-t border-gray-200 mt-8 pt-8 text-center">
           <p className="text-[var(--color-text-light)] text-sm">
             © 2025 DonateSmart. All rights reserved. Made with{' '}
-            <Icon icon="fluent:heart-28-filled" className="inline w-4 h-4 text-[var(--color-primary)]" /> for a better world.
+            <Icon icon="fluent:heart-28-filled" className="inline w-4 h-4 text-[var(--color-primary)]" /> by Hasan, Areen, Lujain, Mohammed. For a better world.
           </p>
         </div>
       </div>
