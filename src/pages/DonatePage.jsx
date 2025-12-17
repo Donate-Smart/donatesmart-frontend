@@ -36,20 +36,32 @@ export function DonatePage() {
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.user.currentUser);
 
-  const currentAmount = customAmount ? parseFloat(customAmount) : selectedAmount || 0;
-  const processingFee = currentAmount * 0.03; // 3% processing fee
-  const totalAmount = coverFees ? currentAmount + processingFee : currentAmount;
+  const parsedCustomAmount = Number(customAmount);
+  const currentAmount =
+    parsedCustomAmount > 0
+      ? parsedCustomAmount
+      : selectedAmount > 0
+        ? selectedAmount
+        : 0;
+  const processingFee = currentAmount > 0 ? currentAmount * 0.03 : 0;
+  const totalAmount =
+    currentAmount > 0
+      ? coverFees
+        ? currentAmount + processingFee
+        : currentAmount
+      : 0;
 
-  useEffect(() =>{
-    if(!currentUser || currentUser.role === "admin") navigate('/');
+
+  useEffect(() => {
+    if (!currentUser || currentUser.role === "admin") navigate('/');
     window.scrollTo({
       top: 0,
       behavior: 'smooth',
     })
-  
-  },[])
 
-   useEffect(() => {
+  }, [])
+
+  useEffect(() => {
     const fetchCase = async () => {
       try {
         const res = await axios.get(`/api/cases/${id}`);
@@ -67,11 +79,11 @@ export function DonatePage() {
     fetchCase();
   }, [id]);
 
-  async function donate( caseId ,caseTitle, userId, amount) {
+  async function donate(caseId, caseTitle, userId, amount) {
     try {
       const res = await axios.post(
         "/api/payment/checkout",
-        { caseId, caseTitle, userId , amount }
+        { caseId, caseTitle, userId, amount }
       );
 
       const { url } = res.data;
@@ -83,7 +95,7 @@ export function DonatePage() {
   }
 
   const handleDonateClick = () => {
-    donate(id, caseData?.title || "", currentUser._id,totalAmount);
+    donate(id, caseData?.title || "", currentUser._id, totalAmount);
   };
 
   return (
@@ -121,11 +133,10 @@ export function DonatePage() {
                         setSelectedAmount(amount);
                         setCustomAmount('');
                       }}
-                      className={`py-4 px-6 rounded-2xl border-2 transition-all ${
-                        selectedAmount === amount && !customAmount
-                          ? 'border-[var(--color-primary)] bg-[#7fdb34]/10 text-[var(--color-primary)]'
-                          : 'border-gray-200 text-[var(--color-text-light)] hover:border-[#7fdb34)]/50'
-                      }`}
+                      className={`py-4 px-6 rounded-2xl border-2 transition-all ${selectedAmount === amount && !customAmount
+                        ? 'border-[var(--color-primary)] bg-[#7fdb34]/10 text-[var(--color-primary)]'
+                        : 'border-gray-200 text-[var(--color-text-light)] hover:border-[#7fdb34)]/50'
+                        }`}
                     >
                       ${amount}
                     </button>
@@ -137,12 +148,24 @@ export function DonatePage() {
                     type="number"
                     placeholder="Enter custom amount"
                     value={customAmount}
+                    min={1}
+                    step="1"
+                    onKeyDown={(e) => {
+                      if (["e", "E", "+", "-"].includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
                     onChange={(e) => {
-                      setCustomAmount(e.target.value);
+                      const value = e.target.value;
+
+                      if (value !== "" && Number(value) <= 0) return;
+
+                      setCustomAmount(value);
                       setSelectedAmount(null);
                     }}
                     className="file:text-black py-6 placeholder:text-gray-400 selection:bg-[var(--color-primary)] selection:text-white dark:bg-[--color-bg-soft] border-input flex h-9 w-full min-w-0 px-3 text-base bg-input-background outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm pl-12 rounded-2xl border-2 border-gray-200 focus:border-[var(--color-primary)] transition-colors"
                   />
+
                 </div>
               </div>
 
@@ -150,27 +173,24 @@ export function DonatePage() {
               <div className="space-y-4 mb-8">
                 <Label className="text-[var(--color-text-dark)]">Payment Method</Label>
                 <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-                  <div className={`flex items-center gap-3 p-4 border-2 rounded-2xl cursor-pointer transition-all ${
-                    paymentMethod === 'card' ? 'border-[var(--color-primary)] bg-[#7fdb34]/5' : 'border-gray-200'
-                  }`}>
+                  <div className={`flex items-center gap-3 p-4 border-2 rounded-2xl cursor-pointer transition-all ${paymentMethod === 'card' ? 'border-[var(--color-primary)] bg-[#7fdb34]/5' : 'border-gray-200'
+                    }`}>
                     <RadioGroupItem value="card" id="card" />
                     <Icon icon="lucide:credit-card" className="w-5 h-5 text-[var(--color-text-light)]" />
                     <Label htmlFor="card" className="flex-1 cursor-pointer text-[var(--color-text-dark)]">
                       Credit/Debit Card
                     </Label>
                   </div>
-                  <div className={`flex items-center gap-3 p-4 border-2 rounded-2xl cursor-pointer transition-all ${
-                    paymentMethod === 'bank' ? 'border-[var(--color-primary)] bg-[#7fdb34]/5' : 'border-gray-200'
-                  }`}>
+                  <div className={`flex items-center gap-3 p-4 border-2 rounded-2xl cursor-pointer transition-all ${paymentMethod === 'bank' ? 'border-[var(--color-primary)] bg-[#7fdb34]/5' : 'border-gray-200'
+                    }`}>
                     <RadioGroupItem value="bank" id="bank" />
                     <Icon icon="lucide:building-2" className="w-5 h-5 text-[var(--color-text-light)]" />
                     <Label htmlFor="bank" className="flex-1 cursor-pointer text-[var(--color-text-dark)]">
                       Bank Transfer
                     </Label>
                   </div>
-                  <div className={`flex items-center gap-3 p-4 border-2 rounded-2xl cursor-pointer transition-all ${
-                    paymentMethod === 'mobile' ? 'border-[var(--color-primary)] bg-[#7fdb34]/5' : 'border-gray-200'
-                  }`}>
+                  <div className={`flex items-center gap-3 p-4 border-2 rounded-2xl cursor-pointer transition-all ${paymentMethod === 'mobile' ? 'border-[var(--color-primary)] bg-[#7fdb34]/5' : 'border-gray-200'
+                    }`}>
                     <RadioGroupItem value="mobile" id="mobile" />
                     <Icon icon="lucide:smartphone" className="w-5 h-5 text-[var(--color-text-light)]" />
                     <Label htmlFor="mobile" className="flex-1 cursor-pointer text-[var(--color-text-dark)]">
@@ -198,7 +218,7 @@ export function DonatePage() {
               {/* Donate Button */}
               <button
                 onClick={handleDonateClick}
-                disabled={currentAmount === 0}
+                disabled={currentAmount <= 0}
                 className='w-full lg:block bg-[var(--color-primary)] text-white text-base font-medium hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] px-6 py-3 rounded-full hover:cursor-pointer shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed'
               >
                 Donate ${totalAmount.toFixed(2)}

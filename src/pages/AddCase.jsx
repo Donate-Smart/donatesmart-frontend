@@ -21,33 +21,33 @@ export default function AddCase() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const [aiError, setAiError] = useState("");
 
- const handleGenerateSummary = async () => {
-  setIsGenerating(true);
-  setAiError("");
-  setSummary("");
+  const handleGenerateSummary = async () => {
+    setIsGenerating(true);
+    setAiError("");
+    setSummary("");
 
-  try {
-    const res = await fetch("http://localhost:5000/api/ai/summarize", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, description })
-    });
+    try {
+      const res = await fetch("http://localhost:5000/api/ai/summarize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description })
+      });
 
-    const json = await res.json();
+      const json = await res.json();
 
-    // إذا رجع ملخص، اعرضه مباشرة
-    if (json.success && json.data?.summary) {
-      setSummary(json.data.summary);
-    } else {
-      // إذا ما فيه ملخص، اعرض الخطأ
-      setAiError(json.data?.error || "AI request failed");
+      // إذا رجع ملخص، اعرضه مباشرة
+      if (json.success && json.data?.summary) {
+        setSummary(json.data.summary);
+      } else {
+        // إذا ما فيه ملخص، اعرض الخطأ
+        setAiError(json.data?.error || "AI request failed");
+      }
+    } catch (e) {
+      setAiError(e.message);
+    } finally {
+      setIsGenerating(false);
     }
-  } catch (e) {
-    setAiError(e.message);
-  } finally {
-    setIsGenerating(false);
-  }
-};
+  };
 
   // حماية الصفحة
   useEffect(() => {
@@ -78,9 +78,9 @@ export default function AddCase() {
       newErrors.goal = "Funding goal is required.";
     } else if (Number.isNaN(numericGoal) || numericGoal <= 0) {
       newErrors.goal = "Funding goal must be a positive number.";
-    } else if (numericGoal < 100){
+    } else if (numericGoal < 100) {
       newErrors.goal = "Funding goal must be at least $100!"
-    } else if (numericGoal > 100000000){
+    } else if (numericGoal > 100000000) {
       newErrors.goal = "Funding goal must not exeeed $100.000.000!"
     }
 
@@ -214,32 +214,32 @@ export default function AddCase() {
           {/* Category with custom arrow */}
           <div style={styles.fieldGroup}>
             <label style={styles.label}>Category *</label>
-             <Select value={category} onValueChange=
-                {(e) => {
-                  setCategory(e);
-                  setErrors((prev) => ({ ...prev, category: undefined }));
-                }}>
-                <SelectTrigger className="rounded-2xl bg-white h-12 border-2 border-gray-200 focus:border-[var(--color-primary)]">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="Education">Education</SelectItem>
-                  <SelectItem value="Health">Health</SelectItem>
-                  <SelectItem value="Medical">Medical</SelectItem>
-                  <SelectItem value="Food">Food</SelectItem>
-                  <SelectItem value="Emergency">Emergency</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.category && (
-              <p style={styles.errorText}>{errors.category}</p>
-              )}
-          </div>
-            
+            <Select value={category} onValueChange=
+              {(e) => {
+                setCategory(e);
+                setErrors((prev) => ({ ...prev, category: undefined }));
+              }}>
+              <SelectTrigger className="rounded-2xl bg-white h-12 border-2 border-gray-200 focus:border-[var(--color-primary)]">
+                <SelectValue placeholder="Select category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="Education">Education</SelectItem>
+                <SelectItem value="Health">Health</SelectItem>
+                <SelectItem value="Medical">Medical</SelectItem>
+                <SelectItem value="Food">Food</SelectItem>
+                <SelectItem value="Emergency">Emergency</SelectItem>
+              </SelectContent>
+            </Select>
             {errors.category && (
               <p style={styles.errorText}>{errors.category}</p>
             )}
-        
+          </div>
+
+          {errors.category && (
+            <p style={styles.errorText}>{errors.category}</p>
+          )}
+
 
           {/* Funding Goal */}
           <div style={styles.fieldGroup}>
@@ -249,11 +249,22 @@ export default function AddCase() {
               placeholder="Enter your funding goal"
               style={styles.input}
               value={goal}
+              min={0}
+              step="1"
+              onKeyDown={(e) => {
+                if (["e", "E", "+", "-"].includes(e.key)) {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => {
-                setGoal(e.target.value);
+                const value = e.target.value;
+
+                if (value !== "" && Number(value) < 0) return;
+                setGoal(value === "" ? "" : Number(value));
                 setErrors((prev) => ({ ...prev, goal: undefined }));
               }}
             />
+
             {errors.goal && (
               <p style={styles.errorText}>{errors.goal}</p>
             )}
@@ -319,11 +330,11 @@ export default function AddCase() {
               </div>
             )}
           </div>
-{aiError && (
-        <div style={{ marginTop: 8, color: "tomato" }}>
-          <strong>Note:</strong> {aiError} (showing fallback if AI failed)
-        </div>
-      )}
+          {aiError && (
+            <div style={{ marginTop: 8, color: "tomato" }}>
+              <strong>Note:</strong> {aiError} (showing fallback if AI failed)
+            </div>
+          )}
           {/* Submit */}
           <button
             type="submit"
