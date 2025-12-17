@@ -198,7 +198,7 @@ export default function AddCase() {
             <label style={styles.label}>Case Title *</label>
             <input
               type="text"
-              placeholder="Enter a compelling title for your case"
+              placeholder="Enter a title for your case"
               style={styles.input}
               value={title}
               onChange={(e) => {
@@ -235,11 +235,6 @@ export default function AddCase() {
               <p style={styles.errorText}>{errors.category}</p>
             )}
           </div>
-
-          {errors.category && (
-            <p style={styles.errorText}>{errors.category}</p>
-          )}
-
 
           {/* Funding Goal */}
           <div style={styles.fieldGroup}>

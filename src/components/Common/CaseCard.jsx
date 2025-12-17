@@ -13,26 +13,30 @@ export function CaseCard({ caseItem, buttonText }) {
     if (!currentUser) toast("Please Login first");
     else navigate(`/donate/${caseItem._id}`);
   };
+  const goToDetails = () => {
+    navigate(`/case/${caseItem._id}`);
+  }
+
 
   const buttonStyle =
     "w-full py-1 bg-[var(--color-primary)] text-white text-base font-bold hover:bg-transparent hover:text-[var(--color-primary)] border border-[var(--color-primary)] rounded-xl shadow-md hover:shadow-lg duration-300 transition-all hover:cursor-pointer";
 
-  return (
-    <div
-      key={caseItem.id}
-      className="bg-white rounded-3xl overflow-hidden shadow-[12px_12px_24px_rgba(0,0,0,0.1),-12px_-12px_24px_rgba(255,255,255,0.9)] hover:shadow-[16px_16px_32px_rgba(0,0,0,0.15),-16px_-16px_32px_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-2"
-    >
-      {/* Image */}
-      <div className="relative h-48 overflow-hidden">
-        <ImageWithFallback
-          src={`http://localhost:5000/uploads/${caseItem.image}`}
-          alt={caseItem.title}
-          className="w-full h-full object-cover"
-        />
-        <Slot className="border-transparent bg-[var(--color-primary)] text-[var(--color-primary)] [a&]:hover:bg-[#7fdb34]/90 absolute top-4 right-4 bg-white/90 border-0 px-3 py-1 rounded-full shadow-lg">
-          {caseItem.category}
-        </Slot>
-      </div>
+  return(
+  <div key={caseItem.id}
+        onClick={goToDetails}
+          className="bg-white rounded-3xl overflow-hidden shadow-[12px_12px_24px_rgba(0,0,0,0.1),-12px_-12px_24px_rgba(255,255,255,0.9)] hover:shadow-[16px_16px_32px_rgba(0,0,0,0.15),-16px_-16px_32px_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-2"
+        >
+          {/* Image */}
+          <div className="relative h-48 overflow-hidden">
+            <ImageWithFallback
+              src={`http://localhost:5000/uploads/${caseItem.image}`}
+              alt={caseItem.title}
+              className="w-full h-full object-cover"
+            />
+            <Slot className="border-transparent bg-[var(--color-primary)] text-[var(--color-primary)] [a&]:hover:bg-[#7fdb34]/90 absolute top-4 right-4 bg-white/90 border-0 px-3 py-1 rounded-full shadow-lg">
+              {caseItem.category}
+            </Slot>
+          </div>
 
       {/* Content */}
       <div className="p-6 flex flex-col">

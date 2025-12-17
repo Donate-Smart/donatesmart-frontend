@@ -245,7 +245,6 @@ const styles = {
     minHeight: "100vh",
     background: "#F5F7FA",
     padding: "30px 16px",
-    marginTop: "90px"
   },
   container: {
     maxWidth: "1100px",
