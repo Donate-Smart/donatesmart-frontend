@@ -8,7 +8,7 @@ const NotFound = () => {
       <section className="pt-8 pb-20">
         <div className="container mx-auto">
           <div className="-mx-4 flex flex-wrap items-center">
-            <div className="w-full px-4 md:w-5/12 lg:w-6/12">
+            <div className="w-60 mx-auto px-4 md:w-5/12 lg:w-6/12">
               <div className="relative mx-auto aspect-129/138 max-w-[357px] text-center">
                 <img
                   src="/images/404.svg"
@@ -17,9 +17,9 @@ const NotFound = () => {
                 />
               </div>
             </div>
-            <div className="w-full px-4 md:w-7/12 lg:w-6/12 xl:w-5/12">
+            <div className="w-80 mx-auto px-4 md:w-7/12 lg:w-6/12 xl:w-5/12">
               <div>
-                <div className="mb-8">
+                <div className="mb-8 hidden md:block">
                   <svg
                     width="327"
                     height="132"
@@ -50,16 +50,25 @@ const NotFound = () => {
                     />
                   </svg>
                 </div>
-                <h3 className="mb-5 text-2xl font-semibold text-[var(--color-text-dark)] ">
+                <div className="block md:hidden w-60 mx-auto px-4 md:w-5/12 lg:w-6/12">
+                  <div className="relative mx-auto aspect-129/138 max-w-[357px] text-center">
+                    <img
+                      src="/images/opps.svg"
+                      alt="404"
+                      className="mx-auto max-w-full"
+                    />
+                  </div>
+                </div>
+                <h3 className="text-center md:text-left my-5 text-2xl font-semibold text-[var(--color-text-dark)] ">
                   We Can&#39;t Seem to Find The Page You&#39;re Looking For.
                 </h3>
-                <p className="mb-8 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">
+                <p className="text-center md:text-left mb-8 text-base text-[var(--color-text-dark)] dark:text-[var(--color-text-light)]">
                   Oops! The page you are looking for does not exist. It might have
                   been moved or deleted.
                 </p>
                 <Link
                   to="/"
-                  className="rounded-md px-7 py-3 text-base font-medium text-white transition bg-[var(--color-primary)] hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] hover:cursor-pointer"
+                  className="rounded-md w-48 md:w-auto text-center block md:inline mx-auto md:mx-0 px-7 py-3 text-base font-medium text-white transition bg-[var(--color-primary)] hover:bg-transparent duration-300 hover:text-[var(--color-primary)] border border-[var(--color-primary)] hover:cursor-pointer"
                 >
                   Go To Home
                 </Link>

@@ -111,7 +111,7 @@ const validateForm = () => {
       <section id="contact">
         <div className="container">
           <div className="relative">
-            <h2 className="mb-9 text-center font-bold tracking-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl mb-9 text-center font-bold tracking-tight">
               Get in Touch
             </h2>
             <form
@@ -211,12 +211,12 @@ const validateForm = () => {
               <div className="text-center my-2.5 w-full">
                 <button
                   type="submit"
-                  className={`border leading-none px-12 text-lg font-medium py-4 rounded-lg 
-    ${
-      loader
-        ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-        : "bg-[var(--color-primary)] border-[var(--color-primary)] text-white hover:bg-transparent hover:text-[var(--color-primary)] cursor-pointer"
-    }`}
+                  className={`border leading-none px-10 sm:px-12 text-base sm:text-lg font-medium py-3 sm:py-4 rounded-lg 
+                ${
+                  loader
+                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    : "bg-[var(--color-primary)] border-[var(--color-primary)] text-white hover:bg-transparent hover:text-[var(--color-primary)] cursor-pointer"
+                }`}
                 >
                   {loader ? "Submitting..." : "Submit"}
                 </button>

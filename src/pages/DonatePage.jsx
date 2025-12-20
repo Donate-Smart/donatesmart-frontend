@@ -119,7 +119,7 @@ export function DonatePage() {
                   height={64}
                   className='rounded-full shadow-md'
                 />
-                <h2 className="text-[var(--color-text-dark)]">Make a Donation</h2>
+                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-[var(--color-text-dark)]">Make a Donation</h2>
               </div>
 
               {/* Amount Selection */}
