@@ -18,8 +18,7 @@ const MobileHeaderLink = ({ item, closeMenu }) => {
         <Link
           to={item.href}
           onClick={closeMenu}
-          className="block py-2 text-black hover:text-[var(--color-primary)]"
-        >
+          className="block py-2 text-black hover:text-[var(--color-primary)]">
           {item.label}
         </Link>
       )}

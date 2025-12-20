@@ -18,6 +18,7 @@ const Navbar = () => {
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
 
+
   // instead of writing document.getElementById("nav")
   const signInRef = useRef(null);
   const signUpRef = useRef(null);
@@ -100,6 +101,10 @@ const Navbar = () => {
     }
   }, [isSignInOpen, isSignUpOpen, navbarOpen])
 
+  useEffect(() => {
+    document.body.style.overflow = navbarOpen ? "hidden" : "";
+  }, [navbarOpen]);
+
   const signOutUser = () => {
     dispatch(logoutUser());
     toast.success("Logged out successfully!");
@@ -108,12 +113,12 @@ const Navbar = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full bg-white/80 backdrop-blur-sm transition-all duration-300 ${sticky ? ' shadow-lg py-1' : 'shadow-sm py-0'
+      className={`sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm transition-all duration-300 ${sticky ? ' shadow-lg py-1' : 'shadow-sm py-0'
         }`}>
       <div className='container mx-auto px-6 py-4'>
         <div className='flex items-center justify-between'>
           <Logo />
-          <nav className='hidden md:flex items-center gap-8'>
+          <nav className='hidden lg:flex items-center gap-8'>
             {headerData.map((item, index) => (
               <HeaderLink key={index} item={item} />
             ))}
@@ -193,11 +198,11 @@ const Navbar = () => {
           </div>
         </div>
         {navbarOpen && (
-          <div className='fixed top-0 left-0 w-full h-full bg-black/50 z-40' />
+          <div className='fixed top-0 left-0 w-full h-full bg-black/50 z-45' />
         )}
         <div
           ref={mobileMenuRef}
-          className={`lg:hidden fixed top-0 right-0 h-full w-full bg-white shadow-lg transform transition-transform duration-300 max-w-xs ${navbarOpen ? 'translate-x-0' : 'translate-x-full'
+          className={`lg:hidden fixed top-0 right-0 h-screen w-full bg-white shadow-lg transform transition-transform duration-300 max-w-xs ${navbarOpen ? 'translate-x-0' : 'translate-x-full'
             } z-50`}>
           <div className='flex items-center justify-between p-4'>
             <h2 className='text-lg font-bold text-midnight_text'>
@@ -219,7 +224,7 @@ const Navbar = () => {
               <MobileHeaderLink
                 key={index}
                 item={item}
-                onNavigate={() => setNavbarOpen(false)}
+                closeMenu={() => setNavbarOpen(false)}
               />
             ))}
 
