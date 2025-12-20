@@ -90,25 +90,24 @@ export default function EditProfile() {
         </label>
 
         <button
-            type="submit"
-            disabled={isLoading || isUnchanged}
-            className={`w-full py-3 text-18 rounded-lg font-medium border  transition duration-300 ease-in-out
-                  ${isLoading || isUnchanged
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300"
-                : "bg-[var(--color-primary)] text-white border-[var(--color-primary)] hover:bg-transparent hover:text-[var(--color-primary)] hover:cursor-pointer"
-              }
-  `}
-          >
-            {isLoading ? "Saving..." : "Save Changes"}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate("/profile")}
-            className="w-full mt-3 mb-4 py-3 rounded-lg border text-gray-600 hover:bg-gray-50 transition"
-          >
-            Cancel
-          </button>
+          type="submit"
+          disabled={isLoading || isUnchanged}
+          className={`w-full py-3 text-18 rounded-lg font-medium border  transition duration-300 ease-in-out
+            ${isLoading || isUnchanged
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300"
+              : "bg-[var(--color-primary)] text-white border-[var(--color-primary)] hover:bg-transparent hover:text-[var(--color-primary)] hover:cursor-pointer"
+            }`}>
+          {isLoading ? "Saving..." : "Save Changes"}
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate("/profile")}
+          className="w-full mt-3 mb-4 py-3 rounded-lg border text-gray-600 hover:bg-gray-50 transition"
+        >
+          Cancel
+        </button>
       </form>
+      </div>
     </div>
   );
 }
