@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/Common/select';
 import { CaseCard } from '../components/Common/CaseCard';
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import CourseDetailSkeleton from '../components/Skeleton/CaseDetail/CaseDetailSkeleton'
 
@@ -75,13 +76,16 @@ export function AllCases() {
   const [filteredCases, setFilteredCases] = useState([]);
   const [loading, setLoading] = useState(true)
   const [visibleCount, setVisibleCount] = useState(6);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const fetchCases = async () => {
       try {
         const res = await axios.get("/api/cases");
+        let activeCases = res.data;
         //console.log(res.data);
-        const activeCases = res.data.filter(c => c.donations < c.goal);
+        if(currentUser.role !== "admin")
+          activeCases = res.data.filter(c => c.donations < c.goal);
         setCases(activeCases || allCasesDummy);
       } catch (err) {
         console.error("Error fetching cases:", err.response, err.response?.data || err.message);
