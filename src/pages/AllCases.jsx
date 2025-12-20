@@ -74,9 +74,9 @@ export function AllCases() {
   const [cases, setCases] = useState([]);
   const [filteredCases, setFilteredCases] = useState([]);
   const [loading, setLoading] = useState(true)
+  const [visibleCount, setVisibleCount] = useState(6);
 
-  useEffect(() => 
-  {
+  useEffect(() => {
     const fetchCases = async () => {
       try {
         const res = await axios.get("/api/cases");
@@ -94,19 +94,24 @@ export function AllCases() {
     fetchCases();
   }, []);
 
-  useEffect(() => 
-  {
-    if(cases)
-      setFilteredCases(cases.filter((caseItem) => {
-        const matchesSearch = caseItem.title?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-          caseItem.description?.toLowerCase().includes(searchTerm?.toLowerCase());
-        const matchesCategory = selectedCategory === 'all' || caseItem.category === selectedCategory;
-        return matchesSearch && matchesCategory;
-      }))
-    
-  }, [cases, searchTerm, selectedCategory]);
+  useEffect(() => {
+    if (cases) {
+      setFilteredCases(
+        cases.filter((caseItem) => {
+          const matchesSearch =
+            caseItem.title?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+            caseItem.description?.toLowerCase().includes(searchTerm?.toLowerCase());
 
-  
+          const matchesCategory =
+            selectedCategory === 'all' || caseItem.category === selectedCategory;
+
+          return matchesSearch && matchesCategory;
+        })
+      );
+
+      setVisibleCount(6);
+    }
+  }, [cases, searchTerm, selectedCategory]);
 
   return (
     <div className="min-h-screen bg-[var(--color-bg-soft)]">
@@ -152,16 +157,33 @@ export function AllCases() {
         <div className="px-10 sm:px-0 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
-                <CourseDetailSkeleton key={i} />
+              <CourseDetailSkeleton key={i} />
             ))) : filteredCases.length > 0 ?
-            (filteredCases.map((caseItem) => (
-            <CaseCard caseItem={caseItem} buttonText={"View Details"} />
-            ))): 
+            (filteredCases
+              .slice(0, visibleCount)
+              .map((caseItem) => (
+                <CaseCard
+                  key={caseItem._id}
+                  caseItem={caseItem}
+                  buttonText={"View Details"}
+                />
+              )))
+            :
             (<div className="text-center py-20">
-                <p className="text-[var(--color-text-light)] text-lg">No cases found matching your search criteria.</p>
+              <p className="text-[var(--color-text-light)] text-lg">No cases found matching your search criteria.</p>
             </div>)
           }
         </div>
+        {!loading && filteredCases.length > visibleCount && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + 6)}
+              className="px-8 py-3 rounded-full bg-[var(--color-primary)] text-white hover:opacity-90 transition"
+            >
+              Load More
+            </button>
+          </div>
+        )}
 
         {/* No Results
         {filteredCases.length === 0 && (
