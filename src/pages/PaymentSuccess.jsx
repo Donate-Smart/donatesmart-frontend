@@ -46,7 +46,7 @@ function PaymentSuccess() {
   [session]);
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center px-6 py-12">
+    <div className="h-auto md:min-h-screen bg-[#F5F7FA] flex md:items-center justify-center py-10 px-6 md:py-12">
       <div className="max-w-md w-full">
         <div className="bg-white rounded-3xl p-8 shadow-[12px_12px_24px_rgba(0,0,0,0.1),-12px_-12px_24px_rgba(255,255,255,0.9)] text-center">
           {/* Success Icon */}
@@ -55,7 +55,7 @@ function PaymentSuccess() {
           </div>
 
           {/* Success Message */}
-          <h1 className="text-[#2D3748] mb-3">Payment Successful!</h1>
+          <h1 className=" text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-[#2D3748] mb-3">Payment Successful!</h1>
           <p className="text-[var(--color-text-light)] mb-8">
             Thank you for your generosity
           </p>
@@ -93,7 +93,7 @@ function PaymentSuccess() {
             <Link to={`/case/${session?.metadata?.caseId}`} className="block">
               <button
                 variant="outline"
-                className="w-full flex items-center justify-center gap-2 py-6 rounded-2xl border-2 border-gray-300 text-[var(--color-text-light)] hover:bg-gray-50 transition-all"
+                className="w-full flex items-center justify-center gap-2 py-4 md:py-6 rounded-2xl border-2 border-gray-300 text-[var(--color-text-light)] hover:bg-gray-50 transition-all"
               >
                 View Case Details
                 <Icon icon="lucide:arrow-right" className="w-5 h-5" />

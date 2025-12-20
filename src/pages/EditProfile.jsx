@@ -64,55 +64,49 @@ export default function EditProfile() {
           Update Profile
         </h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="w-full bg-white px-6 pt-6 pb-1 shadow-md rounded-2xl"
+      <form
+        onSubmit={handleSubmit}
+        className="w-11/12 md:w-1/2 bg-white p-9 shadow-md rounded-md"
+      >
+        <label className="block mb-4">
+          <span className="text-gray-700 font-medium">Name</span>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full text-base px-4 rounded-xl py-3 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0 mt-1 disabled:bg-gray-100 disabled:cursor-not-allowed"
+
+          />
+        </label>
+
+        <label className="block mb-6 text-base">
+          <span className="text-gray-700 font-medium">Email</span>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full text-base px-4 rounded-md py-3 border-solid border transition-all duration-500 focus:border-[var(--color-primary)] focus:outline-0 mt-1 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          />
+        </label>
+
+        <button
+          type="submit"
+          disabled={isLoading || isUnchanged}
+          className={`w-full py-3 text-18 rounded-lg font-medium border  transition duration-300 ease-in-out
+            ${isLoading || isUnchanged
+              ? "bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300"
+              : "bg-[var(--color-primary)] text-white border-[var(--color-primary)] hover:bg-transparent hover:text-[var(--color-primary)] hover:cursor-pointer"
+            }`}>
+          {isLoading ? "Saving..." : "Save Changes"}
+        </button>
+        <button
+          type="button"
+          onClick={() => navigate("/profile")}
+          className="w-full mt-3 mb-4 py-3 rounded-lg border text-gray-600 hover:bg-gray-50 transition"
         >
-          <label className="block mb-4">
-            <span className="text-gray-700 font-medium">Name</span>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              disabled={isLoading}
-              required
-              className="w-full border px-4 py-3 rounded-xl focus:border-[var(--color-primary)] focus:outline-none mt-1 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-          </label>
-
-          <label className="block mb-6">
-            <span className="text-gray-700 font-medium">Email</span>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={isLoading}
-              required
-              className="w-full border px-4 py-3 rounded-xl focus:border-[var(--color-primary)] focus:outline-none mt-1 disabled:bg-gray-100 disabled:cursor-not-allowed"
-            />
-          </label>
-
-          <button
-            type="submit"
-            disabled={isLoading || isUnchanged}
-            className={`w-full py-3 rounded-lg font-medium border transition duration-300 ease-in-out
-    ${isLoading || isUnchanged
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed border-gray-300"
-                : "bg-[var(--color-primary)] text-white border-[var(--color-primary)] hover:bg-transparent hover:text-[var(--color-primary)]"
-              }
-  `}
-          >
-            {isLoading ? "Saving..." : "Save Changes"}
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate("/profile")}
-            className="w-full mt-3 mb-4 py-3 rounded-lg border text-gray-600 hover:bg-gray-50 transition"
-          >
-            Cancel
-          </button>
-
-        </form>
+          Cancel
+        </button>
+      </form>
       </div>
     </div>
   );

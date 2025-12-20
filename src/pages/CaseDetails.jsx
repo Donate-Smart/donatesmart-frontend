@@ -226,7 +226,8 @@ export default function CaseDetails() {
         <h3 className="text-xl font-semibold text-[var(--color-text-dark)]  my-6">
           Similar Cases:
         </h3>
-        <div className="grid md:grid-cols-3 gap-8 mt-6">
+        <div className="grid px-10 sm:px-0 md:grid-cols-3 gap-8 mt-6">
+          
         {loading? (
               Array.from({ length: 3 }).map((_, i) => (
                 <CaseDetailSkeleton key={i} />

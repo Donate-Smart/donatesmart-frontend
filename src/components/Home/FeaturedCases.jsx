@@ -68,15 +68,15 @@ export function FeaturedCases() {
   }, []);
 
   return (
-    <section className="container mx-auto px-6 py-20">
-      <div className="text-center mb-16">
-        <h2 className="text-[var(--color-text-dark)] mb-4">Featured Cases</h2>
+    <section className="container mx-auto px-4 py-10 sm:px-6 sm:py-20">
+      <div className="text-center mb-8 sm:mb-16">
+        <h2 className="text-3xl sm:text-5xl text-[var(--color-text-dark)] mb-4">Featured Cases</h2>
         <p className="text-[var(--color-text-light)] max-w-2xl mx-auto">
           Discover verified causes that need your support today
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-3 gap-8 px-10 sm:px-0">
         {loading? (
               Array.from({ length: 3 }).map((_, i) => (
                 <CourseDetailSkeleton key={i} />

@@ -185,7 +185,7 @@ export default function AddCase() {
       <div style={styles.container}>
         {/* Page Header */}
         <div style={styles.header}>
-          <h1 style={styles.title}>Start a New Case</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl" style={styles.title}>Start a New Case</h1>
           <p style={styles.subtitle}>
             Create a fundraising campaign to support a cause that matters to you.
           </p>

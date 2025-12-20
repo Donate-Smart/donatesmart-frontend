@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/Common/select';
 import { CaseCard } from '../components/Common/CaseCard';
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import CourseDetailSkeleton from '../components/Skeleton/CaseDetail/CaseDetailSkeleton'
 
@@ -75,13 +76,16 @@ export function AllCases() {
   const [filteredCases, setFilteredCases] = useState([]);
   const [loading, setLoading] = useState(true)
   const [visibleCount, setVisibleCount] = useState(6);
+  const currentUser = useSelector((state) => state.user.currentUser);
 
   useEffect(() => {
     const fetchCases = async () => {
       try {
         const res = await axios.get("/api/cases");
+        let activeCases = res.data;
         //console.log(res.data);
-        const activeCases = res.data.filter(c => c.donations < c.goal);
+        if(currentUser.role !== "admin")
+          activeCases = res.data.filter(c => c.donations < c.goal);
         setCases(activeCases || allCasesDummy);
       } catch (err) {
         console.error("Error fetching cases:", err.response, err.response?.data || err.message);
@@ -118,7 +122,7 @@ export function AllCases() {
       <div className="container mx-auto px-6 py-12">
         {/* Page Header */}
         <div className="text-center mb-12">
-          <h1 className="text-[var(--color-text-dark)] mb-4">Browse Cases</h1>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-[var(--color-text-dark)] mb-4">Browse Cases</h1>
           <p className="text-[var(--color-text-light)] max-w-2xl mx-auto">
             Discover verified causes and make a meaningful impact with your donation
           </p>
@@ -154,7 +158,7 @@ export function AllCases() {
         </div>
 
         {/* Cases Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="px-10 sm:px-0 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {loading ? (
             Array.from({ length: 6 }).map((_, i) => (
               <CourseDetailSkeleton key={i} />

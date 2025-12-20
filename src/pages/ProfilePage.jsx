@@ -69,15 +69,15 @@ export function ProfilePage() {
           <div className="bg-white rounded-3xl p-8 shadow-[12px_12px_24px_rgba(0,0,0,0.1),-12px_-12px_24px_rgba(255,255,255,0.9)] mb-8">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
               {/* Avatar */}
-              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] flex items-center justify-center text-white shadow-lg">
-                <span className="text-3xl">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] flex items-center justify-center text-white shadow-lg">
+                <span className="text-2xl md:text-3xl">
                   {currentUser && currentUser.name.charAt(0)}
                 </span>
               </div>
 
               {/* User Info */}
               <div className="flex-1">
-                <h2 className="text-[var(--color-text-dark)] mb-2">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl text-[var(--color-text-dark)] mb-2">
                   {currentUser && currentUser.name}
                 </h2>
                 <div className="space-y-1">

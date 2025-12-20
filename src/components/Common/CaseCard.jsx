@@ -24,7 +24,7 @@ export function CaseCard({ caseItem, buttonText }) {
   return(
   <div key={caseItem.id}
         onClick={goToDetails}
-          className="bg-white rounded-3xl overflow-hidden shadow-[12px_12px_24px_rgba(0,0,0,0.1),-12px_-12px_24px_rgba(255,255,255,0.9)] hover:shadow-[16px_16px_32px_rgba(0,0,0,0.15),-16px_-16px_32px_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-2"
+          className="bg-white  rounded-3xl overflow-hidden shadow-[12px_12px_24px_rgba(0,0,0,0.1),-12px_-12px_24px_rgba(255,255,255,0.9)] hover:shadow-[16px_16px_32px_rgba(0,0,0,0.15),-16px_-16px_32px_rgba(255,255,255,0.9)] transition-all duration-300 hover:-translate-y-2"
         >
           {/* Image */}
           <div className="relative h-48 overflow-hidden">
@@ -83,10 +83,10 @@ export function CaseCard({ caseItem, buttonText }) {
               </button>
             ) : (
   <div
-    className={`text-center text-sm rounded-xl py-2 border border-dashed
+    className={`text-center text-sm rounded-xl mt-5 py-2 border border-dashed
       ${
         currentUser?.role === "admin"
-          ? "text-blue-500 border-blue-300"
+          ? "text-[var(--color-primary)] border-[var(--color-primary)]"
           : "text-gray-400 border-gray-300"
       }`}
   >
