@@ -141,11 +141,12 @@ export default function AdminPanel() {
   };
 
   // تعطيل / تفعيل مستخدم
-  const toggleUserStatus = async (id) => {
+  const toggleUserStatus = async (id,currentUser) => {
     try {
-      await axios.put(
-        `/api/admin/toggle-user/${id}`,
-        {},
+      // toggle user
+      await axios.patch(
+        `/api/admin/users/${id}/disable`,
+        { disabled: !currentUser },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -166,7 +167,8 @@ export default function AdminPanel() {
   // حذف مستخدم
   const deleteUser = async (id) => {
     try {
-      await axios.delete(`/api/admin/delete-user/${id}`, {
+      // delete user
+      await axios.delete(`/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers((prev) => prev.filter((u) => u._id !== id));
@@ -298,13 +300,17 @@ export default function AdminPanel() {
               <div style={styles.sectionCard}>
                 <div style={styles.sectionHeader}>
                   <h2 style={styles.sectionTitle}>Key Metrics</h2>
-                  <span style={styles.sectionHint}>Overview of platform activity</span>
+                  <span style={styles.sectionHint}>
+                    Overview of platform activity
+                  </span>
                 </div>
                 <div style={styles.cardsRow}>
                   <div style={styles.card}>
                     <div style={styles.cardLabel}>Total Users</div>
                     <div style={styles.cardNumber}>{stats.totalUsers}</div>
-                    <div style={styles.cardFooter}>Registered on DonateSmart</div>
+                    <div style={styles.cardFooter}>
+                      Registered on DonateSmart
+                    </div>
                   </div>
                   <div style={styles.card}>
                     <div style={styles.cardLabel}>Total Cases</div>
@@ -329,7 +335,9 @@ export default function AdminPanel() {
                   </span>
                 </div>
                 {pendingCases.length === 0 ? (
-                  <p style={styles.emptyText}>No pending cases at the moment.</p>
+                  <p style={styles.emptyText}>
+                    No pending cases at the moment.
+                  </p>
                 ) : (
                   <table style={styles.table}>
                     <thead>
@@ -613,7 +621,7 @@ export default function AdminPanel() {
                       <td style={styles.td}>
                         <button
                           style={styles.reject}
-                          onClick={() => toggleUserStatus(u._id)}
+                          onClick={() => toggleUserStatus(u._id, u.isDisabled)}
                         >
                           {u.isDisabled ? "Enable" : "Disable"}
                         </button>
@@ -968,8 +976,7 @@ const styles = {
     paddingTop: "4px",
   },
   approve: {
-    background:
-      "linear-gradient(90deg, #7FDB34 0%, #6BC428 100%)",
+    background: "linear-gradient(90deg, #7FDB34 0%, #6BC428 100%)",
     color: "white",
     padding: "6px 12px",
     border: "none",
