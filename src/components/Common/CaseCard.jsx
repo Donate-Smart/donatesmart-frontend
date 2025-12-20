@@ -83,10 +83,10 @@ export function CaseCard({ caseItem, buttonText }) {
               </button>
             ) : (
   <div
-    className={`text-center text-sm rounded-xl py-2 border border-dashed
+    className={`text-center text-sm rounded-xl mt-5 py-2 border border-dashed
       ${
         currentUser?.role === "admin"
-          ? "text-blue-500 border-blue-300"
+          ? "text-[var(--color-primary)] border-[var(--color-primary)]"
           : "text-gray-400 border-gray-300"
       }`}
   >
