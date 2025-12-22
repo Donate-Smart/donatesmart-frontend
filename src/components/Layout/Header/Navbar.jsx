@@ -113,7 +113,8 @@ const Navbar = () => {
 
   return (
     <header
-      className={`sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm transition-all duration-300 ${sticky ? ' shadow-lg py-1' : 'shadow-sm py-0'
+      className={`sticky top-0 z-40 w-full bg-white/80 backdrop-blur-sm transition-all duration-300 
+        ${sticky ? ' shadow-lg py-1' : 'shadow-sm py-0'
         }`}>
       <div className='container mx-auto px-6 py-4'>
         <div className='flex items-center justify-between'>

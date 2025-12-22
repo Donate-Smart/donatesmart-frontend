@@ -84,7 +84,7 @@ export function AllCases() {
         const res = await axios.get("/api/cases");
         let activeCases = res.data;
         //console.log(res.data);
-        if(currentUser.role !== "admin")
+        if(currentUser && currentUser.role !== "admin")
           activeCases = res.data.filter(c => c.donations < c.goal);
         setCases(activeCases || allCasesDummy);
       } catch (err) {
@@ -174,7 +174,7 @@ export function AllCases() {
               )))
             :
             (<div className="text-center py-20">
-              <p className="text-[var(--color-text-light)] text-lg">No cases found matching your search criteria.</p>
+              <p className="text-[var(--color-text-light)] text-lg text-center">No cases found matching your search criteria.</p>
             </div>)
           }
         </div>
