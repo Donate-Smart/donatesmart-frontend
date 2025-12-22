@@ -19,6 +19,7 @@ import { AllCases } from "./pages/AllCases";
 import { ProfilePage } from "./pages/ProfilePage";
 import { DonatePage } from "./pages/DonatePage";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import PaymentCancelled from "./pages/PaymentCancelled";
 
 import "./App.css";
 import { Toaster } from 'react-hot-toast';
@@ -55,6 +56,7 @@ function App() {
           <Route path="/google-success" element={<GoogleSuccessHandler />} />
           <Route path="/donate/:id" element={<DonatePage />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-cancelled" element = {<PaymentCancelled />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         {/* <FooterOld /> */}

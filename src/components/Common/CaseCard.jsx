@@ -39,12 +39,13 @@ export function CaseCard({ caseItem, buttonText }) {
           </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col">
+      <div className="p-6 h-[20rem] flex flex-col">
         {/* Top content */}
         <div>
           <h4 className="text-[var(--color-text-dark)]">
             {caseItem.title}
           </h4>
+          <p className="text-[var(--color-text-light)] mt-5 text-sm line-clamp-2 sm:line-clamp-3">{caseItem.summary}</p>
 
           {/* Progress */}
           <div className="space-y-2 mt-5">
@@ -83,7 +84,7 @@ export function CaseCard({ caseItem, buttonText }) {
               </button>
             ) : (
   <div
-    className={`text-center text-sm rounded-xl mt-5 py-2 border border-dashed
+    className={`text-center text-sm rounded-xl py-2 border border-dashed
       ${
         currentUser?.role === "admin"
           ? "text-[var(--color-primary)] border-[var(--color-primary)]"
@@ -91,8 +92,8 @@ export function CaseCard({ caseItem, buttonText }) {
       }`}
   >
     {currentUser?.role === "admin"
-      ? "Admin view — donations are disabled."
-      : "You created this case, but you can view the details from the Cases page."}
+      ? "Admin view — donations disabled."
+      : "You created this case, click to view details."}
   </div>
 )
 

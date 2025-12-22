@@ -1,6 +1,6 @@
 #root
 {
-  overflow-x: hidden;
+  overflow-x: clip;
   max-width: 100vw;
 }
 
@@ -12,6 +12,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: var(--color-bg-soft);
   color: var(--color-text-dark);
+  
 
 }
 
@@ -24,6 +25,7 @@ html {
   scroll-behavior: smooth;
   line-height: 1.5;
   scrollbar-color: var(--color-primary) var(--color-bg-soft);
+  
 }
 
 h1 {
