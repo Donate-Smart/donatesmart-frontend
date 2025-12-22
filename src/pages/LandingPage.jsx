@@ -11,7 +11,7 @@ export default function LandingPage() {
 
 
   return (
-    <main>
+    <main className='bg-gradient-to-b from-white to-[var(--color-bg-soft)]'>
       <Hero />
       <WhyChooseUs />
       <FeaturedCases />

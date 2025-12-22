@@ -23,7 +23,7 @@ const steps = [
 
 export function HowItWorks() {
   return (
-    <section id='howitworks' className="container mx-auto px-4 py-10 sm:px-6 sm:py-20 bg-gradient-to-b from-white to-[var(--color-bg-soft)]">
+    <section id='howitworks' className="container mx-auto px-4 py-10 sm:px-6 sm:py-20 ">
       <div className="text-center mb-8 sm:mb-20">
         <h2 className="text-3xl sm:text-5xl text-[var(--color-text-dark)] mb-4">How It Works</h2>
         <p className="text-[var(--color-text-light)] max-w-2xl mx-auto">
