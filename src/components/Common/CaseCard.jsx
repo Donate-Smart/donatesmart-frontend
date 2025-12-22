@@ -92,8 +92,8 @@ export function CaseCard({ caseItem, buttonText }) {
       }`}
   >
     {currentUser?.role === "admin"
-      ? "Admin view — donations are disabled."
-      : "You created this case, but you can view the details from the Cases page."}
+      ? "Admin view — donations disabled."
+      : "You created this case, click to view details."}
   </div>
 )
 
