@@ -76,7 +76,7 @@ export function FeaturedCases() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-8 px-10 sm:px-0">
+      <div className="grid md:grid-cols-3 gap-6 lg:gap-8 px-5 lg:px-10 md:px-0">
         {loading? (
               Array.from({ length: 3 }).map((_, i) => (
                 <CourseDetailSkeleton key={i} />

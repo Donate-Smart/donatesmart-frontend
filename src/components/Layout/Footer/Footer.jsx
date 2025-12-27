@@ -94,16 +94,19 @@ function Footer() {
                  <Icon icon="lucide:linkedin" className="w-5 h-5 text-[var(--color-text-light)] group-hover:text-white transition-colors" />
               </Link>
             </div>
+            <p className="hidden md:block mt-9 text-[var(--color-text-light)] text-sm">
+              © 2025 DonateSmart. All rights reserved. Made with{' '}
+              <Icon icon="fluent:heart-28-filled" className="inline w-4 h-4 text-[var(--color-primary)]" /> by Hasan, Areen, Lujain, Mohammed. For a better world.
+            </p>
           </div>
         </div>
 
-        {/* Bottom Bar
-        <div className="border-t border-gray-200 mt-8 pt-8 text-center">
+        <div className="block md:hidden border-t text-xs border-gray-200 mt-5 pt-5 text-center">
           <p className="text-[var(--color-text-light)] text-sm">
             © 2025 DonateSmart. All rights reserved. Made with{' '}
             <Icon icon="fluent:heart-28-filled" className="inline w-4 h-4 text-[var(--color-primary)]" /> by Hasan, Areen, Lujain, Mohammed. For a better world.
           </p>
-        </div> */}
+        </div>
       </div>
     </footer>
   );
