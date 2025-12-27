@@ -10,6 +10,7 @@ export default function AdminPanel() {
   const token = localStorage.getItem("token");
 
   const [activeTab, setActiveTab] = useState("dashboard");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const [analytics, setAnalytics] = useState(null);
   const [users, setUsers] = useState([]);
@@ -141,7 +142,7 @@ export default function AdminPanel() {
   };
 
   // تعطيل / تفعيل مستخدم
-  const toggleUserStatus = async (id,currentUser) => {
+  const toggleUserStatus = async (id, currentUser) => {
     try {
       // toggle user
       await axios.patch(
@@ -200,9 +201,32 @@ export default function AdminPanel() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.layout}>
+      <style>{mediaQueries}</style>
+
+      {/* Mobile Menu Button */}
+      <button
+        style={styles.mobileMenuBtn}
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        className="mobile-menu-btn"
+      >
+        <span style={styles.menuIcon}>{sidebarOpen ? '✕' : '☰'}</span>
+      </button>
+
+      {/* Mobile Overlay */}
+      {sidebarOpen && (
+        <div
+          style={styles.overlay}
+          onClick={() => setSidebarOpen(false)}
+          className="mobile-overlay"
+        />
+      )}
+
+      <div style={styles.layout} className="admin-layout">
         {/* Sidebar */}
-        <aside style={styles.sidebar}>
+        <aside style={{
+          ...styles.sidebar,
+          ...(sidebarOpen ? styles.sidebarOpen : {})
+        }} className="admin-sidebar">
           <div style={styles.sidebarHeader}>
             <div style={styles.logoCircle}>DS</div>
             <div>
@@ -214,7 +238,10 @@ export default function AdminPanel() {
           <div style={styles.sidebarSectionTitle}>Overview</div>
           <button
             style={activeTab === "dashboard" ? styles.activeTab : styles.tab}
-            onClick={() => setActiveTab("dashboard")}
+            onClick={() => {
+              setActiveTab("dashboard");
+              setSidebarOpen(false);
+            }}
           >
             Dashboard
           </button>
@@ -222,7 +249,10 @@ export default function AdminPanel() {
           <div style={styles.sidebarSectionTitle}>Cases</div>
           <button
             style={activeTab === "pending" ? styles.activeTab : styles.tab}
-            onClick={() => setActiveTab("pending")}
+            onClick={() => {
+              setActiveTab("pending");
+              setSidebarOpen(false);
+            }}
           >
             Pending Cases
             {pendingCases.length > 0 && (
@@ -231,7 +261,10 @@ export default function AdminPanel() {
           </button>
           <button
             style={activeTab === "approved" ? styles.activeTab : styles.tab}
-            onClick={() => setActiveTab("approved")}
+            onClick={() => {
+              setActiveTab("approved");
+              setSidebarOpen(false);
+            }}
           >
             Approved Cases
             {approvedCases.length > 0 && (
@@ -240,7 +273,10 @@ export default function AdminPanel() {
           </button>
           <button
             style={activeTab === "rejected" ? styles.activeTab : styles.tab}
-            onClick={() => setActiveTab("rejected")}
+            onClick={() => {
+              setActiveTab("rejected");
+              setSidebarOpen(false);
+            }}
           >
             Rejected Cases
             {rejectedCases.length > 0 && (
@@ -251,22 +287,28 @@ export default function AdminPanel() {
           <div style={styles.sidebarSectionTitle}>Management</div>
           <button
             style={activeTab === "users" ? styles.activeTab : styles.tab}
-            onClick={() => setActiveTab("users")}
+            onClick={() => {
+              setActiveTab("users");
+              setSidebarOpen(false);
+            }}
           >
             Users
           </button>
           <button
             style={activeTab === "donations" ? styles.activeTab : styles.tab}
-            onClick={() => setActiveTab("donations")}
+            onClick={() => {
+              setActiveTab("donations");
+              setSidebarOpen(false);
+            }}
           >
             Donations
           </button>
         </aside>
 
         {/* Main Content */}
-        <main style={styles.main}>
+        <main style={styles.main} className="admin-main">
           {/* Header */}
-          <div style={styles.mainHeader}>
+          <div style={styles.mainHeader} className="main-header">
             <div>
               <h1 style={styles.title}>
                 {activeTab === "dashboard" && "Dashboard Overview"}
@@ -304,7 +346,7 @@ export default function AdminPanel() {
                     Overview of platform activity
                   </span>
                 </div>
-                <div style={styles.cardsRow}>
+                <div style={styles.cardsRow} className="cards-row">
                   <div style={styles.card}>
                     <div style={styles.cardLabel}>Total Users</div>
                     <div style={styles.cardNumber}>{stats.totalUsers}</div>
@@ -339,52 +381,56 @@ export default function AdminPanel() {
                     No pending cases at the moment.
                   </p>
                 ) : (
-                  <table style={styles.table}>
-                    <thead>
-                      <tr>
-                        <th style={styles.th}>Title</th>
-                        <th style={styles.th}>Category</th>
-                        <th style={styles.th}>Created By</th>
-                        <th style={styles.th}>Status</th>
-                        <th style={styles.th}>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {pendingCases.slice(0, 3).map((c) => (
-                        <tr key={c._id} style={styles.tr}>
-                          <td style={styles.td}>{c.title}</td>
-                          <td style={styles.td}>{c.category}</td>
-                          <td style={styles.td}>
-                            {c.createdBy?.name} ({c.createdBy?.email})
-                          </td>
-                          <td style={styles.td}>
-                            <span
-                              style={{
-                                ...styles.statusBadge,
-                                ...getStatusBadgeStyle(c.status),
-                              }}
-                            >
-                              {c.status}
-                            </span>
-                          </td>
-                          <td style={styles.td}>
-                            <button
-                              style={styles.approve}
-                              onClick={() => updateStatus(c._id, "approved")}
-                            >
-                              Approve
-                            </button>
-                            <button
-                              style={styles.reject}
-                              onClick={() => updateStatus(c._id, "rejected")}
-                            >
-                              Reject
-                            </button>
-                          </td>
+                  <div style={{ overflowX: "auto" }}>
+                    <table style={styles.table}>
+                      <thead>
+                        <tr>
+                          <th style={styles.th}>Title</th>
+                          <th style={styles.th}>Category</th>
+                          <th style={styles.th}>Created By</th>
+                          <th style={styles.th}>Status</th>
+                          <th style={styles.th}>Actions</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {pendingCases.slice(0, 3).map((c) => (
+                          <tr key={c._id} style={styles.tr}>
+                            <td style={styles.td}>{c.title}</td>
+                            <td style={styles.td}>{c.category}</td>
+                            <td style={styles.td}>
+                              {c.createdBy?.name} ({c.createdBy?.email})
+                            </td>
+                            <td style={styles.td}>
+                              <span
+                                style={{
+                                  ...styles.statusBadge,
+                                  ...getStatusBadgeStyle(c.status),
+                                }}
+                              >
+                                {c.status}
+                              </span>
+                            </td>
+                            <td style={styles.td}>
+                              <div style={styles.actionBtns} className="action-btns">
+                                <button
+                                  style={styles.approve}
+                                  onClick={() => updateStatus(c._id, "approved")}
+                                >
+                                  Approve
+                                </button>
+                                <button
+                                  style={styles.reject}
+                                  onClick={() => updateStatus(c._id, "rejected")}
+                                >
+                                  Reject
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 )}
               </div>
             </>
@@ -399,65 +445,71 @@ export default function AdminPanel() {
                   Review cases before they appear to donors.
                 </span>
               </div>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Title</th>
-                    <th style={styles.th}>Category</th>
-                    <th style={styles.th}>Created By</th>
-                    <th style={styles.th}>Status</th>
-                    <th style={styles.th}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {pendingCases.map((c) => (
-                    <tr key={c._id} style={styles.tr}>
-                      <td style={styles.td}>{c.title}</td>
-                      <td style={styles.td}>{c.category}</td>
-                      <td style={styles.td}>
-                        {c.createdBy?.name} ({c.createdBy?.email})
-                      </td>
-                      <td style={styles.td}>
-                        <span
-                          style={{
-                            ...styles.statusBadge,
-                            ...getStatusBadgeStyle(c.status),
-                          }}
-                        >
-                          {c.status}
-                        </span>
-                      </td>
-                      <td style={styles.td}>
-                        <button
-                          style={styles.approve}
-                          onClick={() => updateStatus(c._id, "approved")}
-                        >
-                          Approve
-                        </button>
-                        <button
-                          style={styles.reject}
-                          onClick={() => updateStatus(c._id, "rejected")}
-                        >
-                          Reject
-                        </button>
-                        <button
-                          style={styles.delete}
-                          onClick={() => deleteCase(c._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {pendingCases.length === 0 && (
+
+              <div style={{ overflowX: "auto" }}>
+                <table style={styles.table}>
+                  <thead>
                     <tr>
-                      <td style={styles.td} colSpan={5}>
-                        <span style={styles.emptyText}>No pending cases.</span>
-                      </td>
+                      <th style={styles.th}>Title</th>
+                      <th style={styles.th}>Category</th>
+                      <th style={styles.th}>Created By</th>
+                      <th style={styles.th}>Status</th>
+                      <th style={styles.th}>Actions</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {pendingCases.map((c) => (
+                      <tr key={c._id} style={styles.tr}>
+                        <td style={styles.td}>{c.title}</td>
+                        <td style={styles.td}>{c.category}</td>
+                        <td style={styles.td}>
+                          {c.createdBy?.name} ({c.createdBy?.email})
+                        </td>
+                        <td style={styles.td}>
+                          <span
+                            style={{
+                              ...styles.statusBadge,
+                              ...getStatusBadgeStyle(c.status),
+                            }}
+                          >
+                            {c.status}
+                          </span>
+                        </td>
+                        <td style={styles.td}>
+                          <div style={styles.actionBtns} className="action-btns">
+                            <button
+                              style={styles.approve}
+                              onClick={() => updateStatus(c._id, "approved")}
+                            >
+                              Approve
+                            </button>
+                            <button
+                              style={styles.reject}
+                              onClick={() => updateStatus(c._id, "rejected")}
+                            >
+                              Reject
+                            </button>
+                            <button
+                              style={styles.delete}
+                              onClick={() => deleteCase(c._id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {pendingCases.length === 0 && (
+                      <tr>
+                        <td style={styles.td} colSpan={5}>
+                          <span style={styles.emptyText}>No pending cases.</span>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -470,55 +522,59 @@ export default function AdminPanel() {
                   These cases are visible to donors.
                 </span>
               </div>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Title</th>
-                    <th style={styles.th}>Category</th>
-                    <th style={styles.th}>Created By</th>
-                    <th style={styles.th}>Status</th>
-                    <th style={styles.th}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {approvedCases.map((c) => (
-                    <tr key={c._id} style={styles.tr}>
-                      <td style={styles.td}>{c.title}</td>
-                      <td style={styles.td}>{c.category}</td>
-                      <td style={styles.td}>
-                        {c.createdBy?.name} ({c.createdBy?.email})
-                      </td>
-                      <td style={styles.td}>
-                        <span
-                          style={{
-                            ...styles.statusBadge,
-                            ...getStatusBadgeStyle(c.status),
-                          }}
-                        >
-                          {c.status}
-                        </span>
-                      </td>
-                      <td style={styles.td}>
-                        <button
-                          style={styles.delete}
-                          onClick={() => deleteCase(c._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {approvedCases.length === 0 && (
+
+              <div style={{ overflowX: "auto" }}>
+                <table style={styles.table}>
+                  <thead>
                     <tr>
-                      <td style={styles.td} colSpan={5}>
-                        <span style={styles.emptyText}>
-                          No approved cases yet.
-                        </span>
-                      </td>
+                      <th style={styles.th}>Title</th>
+                      <th style={styles.th}>Category</th>
+                      <th style={styles.th}>Created By</th>
+                      <th style={styles.th}>Status</th>
+                      <th style={styles.th}>Actions</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {approvedCases.map((c) => (
+                      <tr key={c._id} style={styles.tr}>
+                        <td style={styles.td}>{c.title}</td>
+                        <td style={styles.td}>{c.category}</td>
+                        <td style={styles.td}>
+                          {c.createdBy?.name} ({c.createdBy?.email})
+                        </td>
+                        <td style={styles.td}>
+                          <span
+                            style={{
+                              ...styles.statusBadge,
+                              ...getStatusBadgeStyle(c.status),
+                            }}
+                          >
+                            {c.status}
+                          </span>
+                        </td>
+                        <td style={styles.td}>
+                          <button
+                            style={styles.delete}
+                            onClick={() => deleteCase(c._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {approvedCases.length === 0 && (
+                      <tr>
+                        <td style={styles.td} colSpan={5}>
+                          <span style={styles.emptyText}>
+                            No approved cases yet.
+                          </span>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -531,55 +587,59 @@ export default function AdminPanel() {
                   Cases that were not accepted for publishing.
                 </span>
               </div>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Title</th>
-                    <th style={styles.th}>Category</th>
-                    <th style={styles.th}>Created By</th>
-                    <th style={styles.th}>Status</th>
-                    <th style={styles.th}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rejectedCases.map((c) => (
-                    <tr key={c._id} style={styles.tr}>
-                      <td style={styles.td}>{c.title}</td>
-                      <td style={styles.td}>{c.category}</td>
-                      <td style={styles.td}>
-                        {c.createdBy?.name} ({c.createdBy?.email})
-                      </td>
-                      <td style={styles.td}>
-                        <span
-                          style={{
-                            ...styles.statusBadge,
-                            ...getStatusBadgeStyle(c.status),
-                          }}
-                        >
-                          {c.status}
-                        </span>
-                      </td>
-                      <td style={styles.td}>
-                        <button
-                          style={styles.delete}
-                          onClick={() => deleteCase(c._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {rejectedCases.length === 0 && (
+
+              <div style={{ overflowX: "auto" }}>
+                <table style={styles.table}>
+                  <thead>
                     <tr>
-                      <td style={styles.td} colSpan={5}>
-                        <span style={styles.emptyText}>
-                          No rejected cases yet.
-                        </span>
-                      </td>
+                      <th style={styles.th}>Title</th>
+                      <th style={styles.th}>Category</th>
+                      <th style={styles.th}>Created By</th>
+                      <th style={styles.th}>Status</th>
+                      <th style={styles.th}>Actions</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {rejectedCases.map((c) => (
+                      <tr key={c._id} style={styles.tr}>
+                        <td style={styles.td}>{c.title}</td>
+                        <td style={styles.td}>{c.category}</td>
+                        <td style={styles.td}>
+                          {c.createdBy?.name} ({c.createdBy?.email})
+                        </td>
+                        <td style={styles.td}>
+                          <span
+                            style={{
+                              ...styles.statusBadge,
+                              ...getStatusBadgeStyle(c.status),
+                            }}
+                          >
+                            {c.status}
+                          </span>
+                        </td>
+                        <td style={styles.td}>
+                          <button
+                            style={styles.delete}
+                            onClick={() => deleteCase(c._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {rejectedCases.length === 0 && (
+                      <tr>
+                        <td style={styles.td} colSpan={5}>
+                          <span style={styles.emptyText}>
+                            No rejected cases yet.
+                          </span>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -592,57 +652,63 @@ export default function AdminPanel() {
                   Manage registered users and their access.
                 </span>
               </div>
-              <table style={styles.table}>
-                <thead>
-                  <tr>
-                    <th style={styles.th}>Name</th>
-                    <th style={styles.th}>Email</th>
-                    <th style={styles.th}>Role</th>
-                    <th style={styles.th}>Status</th>
-                    <th style={styles.th}>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map((u) => (
-                    <tr key={u._id} style={styles.tr}>
-                      <td style={styles.td}>{u.name}</td>
-                      <td style={styles.td}>{u.email}</td>
-                      <td style={styles.td}>{u.role}</td>
-                      <td style={styles.td}>
-                        <span
-                          style={{
-                            ...styles.statusBadge,
-                            ...getUserStatusStyle(u.isDisabled),
-                          }}
-                        >
-                          {u.isDisabled ? "Disabled" : "Active"}
-                        </span>
-                      </td>
-                      <td style={styles.td}>
-                        <button
-                          style={styles.reject}
-                          onClick={() => toggleUserStatus(u._id, u.isDisabled)}
-                        >
-                          {u.isDisabled ? "Enable" : "Disable"}
-                        </button>
-                        <button
-                          style={styles.delete}
-                          onClick={() => deleteUser(u._id)}
-                        >
-                          Delete
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {users.length === 0 && (
+
+              <div style={{ overflowX: "auto" }}>
+                <table style={styles.table}>
+                  <thead>
                     <tr>
-                      <td style={styles.td} colSpan={5}>
-                        <span style={styles.emptyText}>No users found.</span>
-                      </td>
+                      <th style={styles.th}>Name</th>
+                      <th style={styles.th}>Email</th>
+                      <th style={styles.th}>Role</th>
+                      <th style={styles.th}>Status</th>
+                      <th style={styles.th}>Actions</th>
                     </tr>
-                  )}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {users.map((u) => (
+                      <tr key={u._id} style={styles.tr}>
+                        <td style={styles.td}>{u.name}</td>
+                        <td style={styles.td}>{u.email}</td>
+                        <td style={styles.td}>{u.role}</td>
+                        <td style={styles.td}>
+                          <span
+                            style={{
+                              ...styles.statusBadge,
+                              ...getUserStatusStyle(u.isDisabled),
+                            }}
+                          >
+                            {u.isDisabled ? "Disabled" : "Active"}
+                          </span>
+                        </td>
+                        <td style={styles.td}>
+                          <div style={styles.actionBtns} className="action-btns">
+                            <button
+                              style={styles.reject}
+                              onClick={() => toggleUserStatus(u._id, u.isDisabled)}
+                            >
+                              {u.isDisabled ? "Enable" : "Disable"}
+                            </button>
+                            <button
+                              style={styles.delete}
+                              onClick={() => deleteUser(u._id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {users.length === 0 && (
+                      <tr>
+                        <td style={styles.td} colSpan={5}>
+                          <span style={styles.emptyText}>No users found.</span>
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           )}
 
@@ -662,26 +728,28 @@ export default function AdminPanel() {
                 </p>
               )}
               {donations && donations.length > 0 && (
-                <table style={styles.table}>
-                  <thead>
-                    <tr>
-                      <th style={styles.th}>Case</th>
-                      <th style={styles.th}>Donor</th>
-                      <th style={styles.th}>Amount</th>
-                      <th style={styles.th}>Date</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {donations.map((d) => (
-                      <tr key={d._id} style={styles.tr}>
-                        <td style={styles.td}>{d.caseTitle}</td>
-                        <td style={styles.td}>{d.userName}</td>
-                        <td style={styles.td}>${d.amount}</td>
-                        <td style={styles.td}>{d.date}</td>
+                <div style={{ overflowX: "auto" }}>
+                  <table style={styles.table}>
+                    <thead>
+                      <tr>
+                        <th style={styles.th}>Case</th>
+                        <th style={styles.th}>Donor</th>
+                        <th style={styles.th}>Amount</th>
+                        <th style={styles.th}>Date</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {donations.map((d) => (
+                        <tr key={d._id} style={styles.tr}>
+                          <td style={styles.td}>{d.caseTitle}</td>
+                          <td style={styles.td}>{d.userName}</td>
+                          <td style={styles.td}>${d.amount}</td>
+                          <td style={styles.td}>{d.date}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </div>
           )}
@@ -695,7 +763,7 @@ const styles = {
   page: {
     minHeight: "100vh",
     background: "#F5F7FA",
-    padding: "24px",
+    padding: "16px",
   },
   layout: {
     maxWidth: "1200px",
@@ -712,6 +780,10 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     gap: "8px",
+    transition: "transform 0.3s ease",
+  },
+  sidebarOpen: {
+    transform: "translateX(0)",
   },
   sidebarHeader: {
     display: "flex",
@@ -806,6 +878,7 @@ const styles = {
     justifyContent: "space-between",
     gap: "16px",
     alignItems: "center",
+    flexWrap: "wrap",
   },
   title: {
     fontSize: "24px",
@@ -877,7 +950,7 @@ const styles = {
   },
   card: {
     flex: 1,
-    minWidth: "180px",
+    minWidth: "220px",
     background: "#F7FAFC",
     borderRadius: "18px",
     padding: "14px",
@@ -885,7 +958,7 @@ const styles = {
   },
   cardAccent: {
     flex: 1,
-    minWidth: "180px",
+    minWidth: "220px",
     background:
       "linear-gradient(135deg, rgba(127,219,52,0.12), rgba(107,196,40,0.18))",
     borderRadius: "18px",
@@ -935,6 +1008,7 @@ const styles = {
     fontSize: "13px",
     borderBottom: "1px solid #EDF2F7",
     color: "#2D3748",
+    whiteSpace: "nowrap",
   },
   statusBadge: {
     display: "inline-flex",
@@ -975,13 +1049,17 @@ const styles = {
     color: "#A0AEC0",
     paddingTop: "4px",
   },
+  actionBtns: {
+    display: "flex",
+    gap: "6px",
+    flexWrap: "wrap",
+  },
   approve: {
     background: "linear-gradient(90deg, #7FDB34 0%, #6BC428 100%)",
     color: "white",
     padding: "6px 12px",
     border: "none",
     borderRadius: "999px",
-    marginRight: "6px",
     cursor: "pointer",
     fontSize: "12px",
     fontWeight: "600",
@@ -993,7 +1071,6 @@ const styles = {
     padding: "6px 12px",
     border: "1px solid rgba(251, 146, 60, 0.6)",
     borderRadius: "999px",
-    marginRight: "6px",
     cursor: "pointer",
     fontSize: "12px",
     fontWeight: "600",
@@ -1008,4 +1085,110 @@ const styles = {
     fontSize: "12px",
     fontWeight: "600",
   },
+  mobileMenuBtn: {
+    display: "none",
+    position: "inherit",
+    top: "20px",
+    left: "20px",
+    zIndex: 1001,
+    background: "#ffffff",
+    border: "none",
+    borderRadius: "12px",
+    padding: "10px 14px",
+    cursor: "pointer",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+  },
+  menuIcon: {
+    fontSize: "20px",
+    color: "#2D3748",
+  },
+  overlay: {
+    display: "none",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: "rgba(0, 0, 0, 0.5)",
+    zIndex: 999,
+  },
 };
+
+const mediaQueries = `
+  @media (max-width: 992px) {
+    .admin-layout {
+      flex-direction: column;
+    }
+    
+    .admin-sidebar {
+      position: fixed !important;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 280px !important;
+      max-width: 85vw;
+      z-index: 1000;
+      transform: translateX(-100%);
+      box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2) !important;
+      border-radius: 0 !important;
+    }
+    
+    .mobile-menu-btn {
+      display: block !important;
+    }
+    
+    .mobile-overlay {
+      display: block !important;
+    }
+    
+    .admin-main {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .cards-row {
+      flex-direction: column;
+    }
+    
+    .cards-row > div {
+      min-width: 100% !important;
+    }
+    
+    .main-header {
+      flex-direction: column;
+      align-items: flex-start !important;
+    }
+    
+    .action-btns {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .action-btns button {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    body {
+      font-size: 14px;
+    }
+    
+    table {
+      font-size: 11px !important;
+    }
+    
+    th, td {
+      padding: 8px 6px !important;
+    }
+    
+    h1 {
+      font-size: 20px !important;
+    }
+    
+    h2 {
+      font-size: 16px !important;
+    }
+  }
+`;
