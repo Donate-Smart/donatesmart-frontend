@@ -20,7 +20,7 @@ import { ProfilePage } from "./pages/ProfilePage";
 import { DonatePage } from "./pages/DonatePage";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancelled from "./pages/PaymentCancelled";
-
+import AboutUs from "./pages/AboutUs";
 import "./App.css";
 import { Toaster } from 'react-hot-toast';
 import { useEffect } from "react";
@@ -28,6 +28,10 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
+
+
+
+
 
 
 function App() {
@@ -57,6 +61,7 @@ function App() {
           <Route path="/donate/:id" element={<DonatePage />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment-cancelled" element = {<PaymentCancelled />} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         {/* <FooterOld /> */}
