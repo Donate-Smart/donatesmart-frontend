@@ -20,7 +20,7 @@ function Footer() {
             <h4 className="text-base sm:text-lg text-[var(--color-text-dark)] mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
+                <Link to="/about" className="text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors text-sm">
                   About Us
                 </Link>
               </li>
