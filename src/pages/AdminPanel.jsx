@@ -187,6 +187,20 @@ export default function AdminPanel() {
       pendingCases.length + approvedCases.length + rejectedCases.length,
     totalPending: analytics?.totalPendingCases ?? pendingCases.length,
   };
+  // Donation Progress
+  const totalDonated = analytics?.totalDonated ?? 0;
+
+  const donationTarget =
+    analytics?.donationTarget && analytics.donationTarget > 0
+      ? analytics.donationTarget
+      : 1;
+
+  const donationPercentage = Math.min(
+    Math.round((totalDonated / donationTarget) * 100),
+    100
+  );
+
+
 
   const getStatusBadgeStyle = (status) => {
     if (status === "pending") return styles.statusPending;
@@ -347,6 +361,24 @@ export default function AdminPanel() {
                   </span>
                 </div>
                 <div style={styles.cardsRow} className="cards-row">
+                  <div style={styles.cardAccent}>
+                    <div style={styles.cardLabel}>Total Donations all time </div>
+
+                    <div style={styles.cardNumber}>
+                      ${totalDonated.toLocaleString()}
+                    </div>
+
+                    <div style={styles.progressBar}>
+                      <div
+                        style={{
+                          ...styles.progressFill,
+                          width: `${donationPercentage}%`,
+                        }}
+                      />
+                    </div>
+                    
+                  </div>
+
                   <div style={styles.card}>
                     <div style={styles.cardLabel}>Total Users</div>
                     <div style={styles.cardNumber}>{stats.totalUsers}</div>
@@ -983,6 +1015,22 @@ const styles = {
     fontSize: "12px",
     color: "#718096",
   },
+  progressBar: {
+    marginTop: "8px",
+    width: "100%",
+    height: "8px",
+    background: "#E2E8F0",
+    borderRadius: "999px",
+    overflow: "hidden",
+  },
+
+  progressFill: {
+    height: "100%",
+    background: "linear-gradient(90deg, #7FDB34, #6BC428)",
+    borderRadius: "999px",
+    transition: "width 0.3s ease",
+  },
+
   table: {
     width: "100%",
     borderCollapse: "separate",
