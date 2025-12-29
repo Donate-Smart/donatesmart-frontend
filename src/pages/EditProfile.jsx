@@ -66,7 +66,7 @@ export default function EditProfile() {
 
       <form
         onSubmit={handleSubmit}
-        className="w-11/12 md:w-1/2 bg-white p-9 shadow-md rounded-md"
+        className="w-11/12 md:w-1x1 bg-white p-9 shadow-md rounded-md"
       >
         <label className="block mb-4">
           <span className="text-gray-700 font-medium">Name</span>

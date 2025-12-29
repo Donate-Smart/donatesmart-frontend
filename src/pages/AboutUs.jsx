@@ -53,7 +53,7 @@ export default function AboutUs() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {[
                   { name: "Areen", role: "Team leader & backend" },
-                  { name: "Hassan", role: "Frontend & UI Systems" },
+                  { name: "Hasan", role: "Frontend & UI Systems" },
                   { name: "Mohammad", role: "Presentation & Product" },
                   { name: "Lujain", role: "Frontend & Testing" },
                 ].map((member, idx) => (
